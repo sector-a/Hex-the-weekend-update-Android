@@ -1,0 +1,10 @@
+dunk:hex:10
+ram:hex:10
+hello-world:hex:10
+glitcher:hex-g:10
+encore:hex:10
+cooling:hex:11
+detected:hex-g-bruh:11
+glitcher-remix:hex-g:11
+java:hex:11
+lcd:hex:11

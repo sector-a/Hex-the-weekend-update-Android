@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="virtualpad.png">
+	<SubTexture name="a" x="0" y="0" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="alt" x="396" y="0" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="b" x="0" y="135" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="c" x="396" y="135" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="circle" x="0" y="270" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="ctrl" x="396" y="270" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="down" x="0" y="405" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="esc" x="396" y="405" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="left" x="0" y="540" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="none" x="396" y="540" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="none2" x="0" y="675" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="right" x="396" y="675" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="shift" x="0" y="810" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="up" x="396" y="810" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="x" x="0" y="945" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+	<SubTexture name="y" x="396" y="945" width="396" height="135" frameX="0" frameY="0" frameWidth="396" frameHeight="135"/>
+</TextureAtlas

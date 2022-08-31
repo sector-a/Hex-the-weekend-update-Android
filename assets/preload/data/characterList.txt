@@ -1,0 +1,16 @@
+bf
+gf
+gf-ss
+gf-n
+gf-g
+gf-w
+gf-wc
+gf-wd
+bf-n
+hex-n
+hex
+hex-g
+hex-g-bruh
+lcdGF1
+lcdHEX1
+lcdBF1
