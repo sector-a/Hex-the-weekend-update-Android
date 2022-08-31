@@ -116,6 +116,7 @@
 	<haxelib name="linc_luajit" />
 	<haxelib name="hxCodec" if="desktop || android" />
 	<haxelib name="hxvm-luajit" if="desktop"/>
+        <haxelib name='extension-androidtools' if='android' />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->
