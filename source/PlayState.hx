@@ -2987,6 +2987,7 @@ class PlayState extends MusicBeatState
 		}
 		if (skipActive && Conductor.songPosition >= skipTo)
 		{
+		  remove(skipb);
 			remove(skipText);
 			skipActive = false;
 		}
