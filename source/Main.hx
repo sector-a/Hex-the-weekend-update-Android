@@ -99,19 +99,15 @@ class Main extends Sprite
 		// Gotta run this before any assets get loaded.
 		ModCore.initialize();
 
-		#if !mobile
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
-		#end
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
-		#if mobile
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
-		#end
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
@@ -120,25 +116,6 @@ class Main extends Sprite
 	var game:FlxGame;
 
 	var fpsCounter:KadeEngineFPS;
-
-	public static function dumpObject(graphic:FlxGraphic)
-	{
-		@:privateAccess
-		for (key in FlxG.bitmap._cache.keys())
-		{
-			var obj = FlxG.bitmap._cache.get(key);
-			if (obj != null)
-			{
-				if (obj == graphic)
-				{
-					Assets.cache.removeBitmapData(key);
-					FlxG.bitmap._cache.remove(key);
-					obj.destroy();
-					break;
-				}
-			}
-		}
-	}
 
 	// taken from forever engine, cuz optimization very pog.
 	// thank you shubs :)
