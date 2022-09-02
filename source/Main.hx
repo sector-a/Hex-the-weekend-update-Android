@@ -49,8 +49,8 @@ class Main extends Sprite
 
 		super();
 
-    SUtil.uncaughtErrorHandler();
-    
+                SUtil.uncaughtErrorHandler();
+
 		if (stage != null)
 		{
 			init();
@@ -87,8 +87,8 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-    SUtil.check();
-    
+                SUtil.check();
+
 		#if !cpp
 		framerate = 60;
 		#end
@@ -99,7 +99,7 @@ class Main extends Sprite
 		// Gotta run this before any assets get loaded.
 		ModCore.initialize();
 
-		#if mobile
+		#if !mobile
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
