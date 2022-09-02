@@ -307,12 +307,12 @@ class Debug
 		addConsoleCommand("playSong", function(songName:String, ?difficulty:Int = 1)
 		{
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Free Play...');
-			FreeplayState.loadSongInFreePlay(songName, difficulty, false);
+			//FreeplayState.loadSongInFreePlay(songName, difficulty, false);
 		});
 		addConsoleCommand("chartSong", function(songName:String, ?difficulty:Int = 1)
 		{
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Chart Editor...');
-			FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
+			//FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
 		});
 	}
 
