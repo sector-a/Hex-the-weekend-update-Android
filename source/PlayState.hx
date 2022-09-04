@@ -678,8 +678,8 @@ class PlayState extends MusicBeatState
 			Debug.logTrace("starting vis");
 			if (coolingHandler == null)
 			{
-				coolingHandler = new MP4Handler();
-				coolingHandler.playMP4(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
+				coolingHandler = new VideoHandler();
+				coolingHandler.playVideo(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
 			}
 			else
 			{
@@ -1922,7 +1922,7 @@ class PlayState extends MusicBeatState
 
 	public var previousRate = songMultiplier;
 
-	public var coolingHandler:MP4Handler = null;
+	public var coolingHandler:VideoHandler = null;
 
 	function startSong():Void
 	{
