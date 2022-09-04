@@ -165,6 +165,7 @@ class SUtil
 	{
 		try
 		{
+                        Application.current.window.alert("savePath:" + savePath + "\ncopyPath: " + copyPath + "\nFileSystem.exists: " + Std.string(FileSystem.exists(savePath)) + "\nAssets.exists: " + Std.string(Assets.exists(copyPath)), 'The Shit');
 			if (!FileSystem.exists(savePath) && Assets.exists(copyPath))
 				File.saveBytes(savePath, Assets.getBytes(copyPath));
 		}
