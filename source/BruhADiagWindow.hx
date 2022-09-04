@@ -125,9 +125,9 @@ class BruhADiagWindow extends MusicBeatState
 			rightCharacter.alpha = 0;
 			rightCharacter.antialiasing = true;
 			// offset cuz yay!
-			if (FileSystem.exists("assets/hex/images/dialogue_sprites/bf/" + expression + "_offset.txt"))
+			if (openfl.utils.Assets.exists("assets/hex/images/dialogue_sprites/bf/" + expression + "_offset.txt"))
 			{
-				var offsets = File.getContent("assets/hex/images/dialogue_sprites/bf/" + expression + "_offset.txt")
+				var offsets = openfl.utils.Assets.getText("assets/hex/images/dialogue_sprites/bf/" + expression + "_offset.txt")
 					.replace("\n", "")
 					.replace("\r", "")
 					.replace("\t", "")
@@ -207,9 +207,9 @@ class BruhADiagWindow extends MusicBeatState
 			}
 			leftCharacter.antialiasing = true;
 			// offset cuz yay!
-			if (FileSystem.exists("assets/hex/images/dialogue_sprites/" + char.toLowerCase() + "/" + expression + "_offset.txt"))
+			if (openfl.utils.Assets.exists("assets/hex/images/dialogue_sprites/" + char.toLowerCase() + "/" + expression + "_offset.txt"))
 			{
-				var offsets = File.getContent("assets/hex/images/dialogue_sprites/" + char.toLowerCase() + "/" + expression + "_offset.txt")
+				var offsets = openfl.utils.Assets.getText("assets/hex/images/dialogue_sprites/" + char.toLowerCase() + "/" + expression + "_offset.txt")
 					.replace("\n", "")
 					.replace("\r", "")
 					.replace("\t", "")
@@ -629,9 +629,9 @@ class BruhADiagWindow extends MusicBeatState
 	public override function create()
 	{
 		if (song == "detectedEnd")
-			lines = File.getContent('assets/data/songs/detected/endDialogue.txt').split('\n');
+			lines = openfl.utils.Assets.getText('assets/data/songs/detected/endDialogue.txt').split('\n');
 		else
-			lines = File.getContent('assets/data/songs/${song}/dialogue.txt').split('\n');
+			lines = openfl.utils.Assets.getText('assets/data/songs/${song}/dialogue.txt').split('\n');
 		while (section != 1)
 		{
 			parseLine(lines[lineIndex]);
@@ -844,7 +844,7 @@ class BruhADiagWindow extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.S)
+			/*if (FlxG.keys.justPressed.S)
 			{
 				if (rightCharacter != null)
 					File.saveContent(FileSystem.absolutePath("assets/hex/images/dialogue_sprites/bf/" + rightExp + "_offset.txt"),
@@ -861,7 +861,7 @@ class BruhADiagWindow extends MusicBeatState
 						+ leftCharacter.offset.y
 						+ ";"
 						+ leftCharacter.angle);
-			}
+			}*/
 		}
 
 		if (waitingOnUpdate)
