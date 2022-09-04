@@ -306,7 +306,7 @@ class GameplayCustomizeState extends MusicBeatState
 		laneunderlayOpponent.screenCenter(Y);
 
 		text = new FlxText(5, FlxG.height + 40, 0,
-			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
+			"Click and drag around gameplay elements to customize their positions. Press LEFT to reset. UP/DOWN to change zoom. RIGHT to show combo. A to exit.",
 			12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -333,6 +333,10 @@ class GameplayCustomizeState extends MusicBeatState
 		sick.y = FlxG.save.data.changedHitY;
 
 		FlxG.mouse.visible = true;
+
+		#if mobileC
+		addVirtualPad(FULL, A);
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -364,13 +368,13 @@ class GameplayCustomizeState extends MusicBeatState
 		for (i in strumLineNotes)
 			i.y = strumLine.y;
 
-		if (FlxG.keys.justPressed.Q)
+		if (controls.UP_P)
 		{
 			FlxG.save.data.zoom += 0.02;
 			camHUD.zoom = FlxG.save.data.zoom;
 		}
 
-		if (FlxG.keys.justPressed.E)
+		if (controls.DOWN_P)
 		{
 			FlxG.save.data.zoom -= 0.02;
 			camHUD.zoom = FlxG.save.data.zoom;
@@ -383,7 +387,7 @@ class GameplayCustomizeState extends MusicBeatState
 			FlxG.save.data.changedHit = true;
 		}
 
-		if (FlxG.keys.justPressed.C)
+		if (controls.RIGHT_P)
 		{
 			var visibleCombos:Array<FlxSprite> = [];
 
@@ -462,7 +466,7 @@ class GameplayCustomizeState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.keys.justPressed.R)
+		if (controls.LEFT_P)
 		{
 			sick.x = defaultX;
 			sick.y = defaultY;
@@ -473,7 +477,7 @@ class GameplayCustomizeState extends MusicBeatState
 			FlxG.save.data.changedHit = false;
 		}
 
-		if (controls.BACK)
+		if (controls.ACCEPT)
 		{
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
