@@ -1922,7 +1922,7 @@ class PlayState extends MusicBeatState
 
 	public var previousRate = songMultiplier;
 
-	public var coolingHandler:VideoHandler = null;
+	public var coolingHandler:VideoSprite = null;
 
 	function startSong():Void
 	{
