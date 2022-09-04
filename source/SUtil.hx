@@ -72,7 +72,7 @@ class SUtil
 				FileSystem.createDirectory(SUtil.getPath() + 'assets/videos');
 
 			for (vid in videoFiles)
-				SUtil.copyContent(Paths.video(vid), SUtil.getPath() + Paths.video(vid));
+				SUtil.copyContent(Paths._video(vid), SUtil.getPath() + Paths._video(vid));
 		}
 		#end
 	}
@@ -165,7 +165,7 @@ class SUtil
 	{
 		try
 		{
-                        Application.current.window.alert("savePath:" + savePath + "\ncopyPath: " + copyPath + "\nFileSystem.exists: " + Std.string(FileSystem.exists(savePath)) + "\nAssets.exists: " + Std.string(Assets.exists(copyPath)), 'The Shit');
+                        //Application.current.window.alert("savePath:" + savePath + "\ncopyPath: " + copyPath + "\nFileSystem.exists: " + Std.string(FileSystem.exists(savePath)) + "\nAssets.exists: " + Std.string(Assets.exists(copyPath)), 'The Shit');
 			if (!FileSystem.exists(savePath) && Assets.exists(copyPath))
 				File.saveBytes(savePath, Assets.getBytes(copyPath));
 		}
