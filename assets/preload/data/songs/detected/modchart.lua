@@ -2,7 +2,7 @@
 
 function start(song)
 	
-	dofile("assets/data/songs/detected/mod-backend.lua")
+	initModule("assets/data/songs/detected/mod-backend.lua")
 	TEMPLATE.InitMods()
 	
 	
