@@ -430,8 +430,7 @@ class ModchartState
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/modchart.lua";
 
-		var result = LuaL.dostring(lua, openfl.utils.Assets.getText("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
-
+		var result = LuaL.dofile(lua, path); // execute le file
 
 		if (result != 0)
 		{

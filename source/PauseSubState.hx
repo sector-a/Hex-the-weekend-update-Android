@@ -134,10 +134,6 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.globalManager.active = false;
 
 		cameras = [PlayState.instance.camHUD];
-		
-		#if mobileC
-		addVirtualPad(UP_DOWN, A);
-		#end
 	}
 
 	override function update(elapsed:Float)
