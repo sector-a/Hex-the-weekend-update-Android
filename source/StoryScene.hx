@@ -25,7 +25,7 @@ class StoryScene extends MusicBeatState
 
 	public override function create()
 	{
-		handler.playVideo(SUtil.getPath() + Paths.video(path));
+		handler.playVideo(Paths.video(path));
 		handler.finishCallback = function()
 		{
 			switchState(new BruhADiagWindow(PlayState.SONG.songId));
