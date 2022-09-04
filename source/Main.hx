@@ -104,6 +104,7 @@ class Main extends Sprite
 		bitmapFPS.smoothing = true;
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, Std.int(zoom), framerate, framerate, true, false);
+                game = new FlxGame(gamewidth, gameheight, initialState, zoom, 60, 60, true);
 		addChild(game);
 
 		addChild(fpsCounter);
