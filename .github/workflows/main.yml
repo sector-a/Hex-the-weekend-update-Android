@@ -48,7 +48,7 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install lime 7.9.0
           haxelib install openfl 9.1.0
-          haxelib install flixel
+          haxelib git flixel https://github.com/Sirox228/flixel
           haxelib git extension-webm https://github.com/Sirox228/extension-webm.git
           haxelib run lime setup flixel
           haxelib install flixel-tools
