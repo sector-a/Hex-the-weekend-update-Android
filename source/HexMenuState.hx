@@ -115,7 +115,7 @@ class HexMenuState extends MusicBeatState
 
 	public static function loadHexMenu(name):HexMenuData
 	{
-		return new HexMenuData(Paths.json(name, "hexMenu").replace("hexMenu:", ""));
+		return new HexMenuData(Paths.json(name, "hexMenu"));
 	}
 
 	var tempArray:Array<HexMenuItem> = [];
