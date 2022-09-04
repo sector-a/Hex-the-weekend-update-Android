@@ -202,6 +202,12 @@ class Paths
 	  return SUtil.getPath() + 'assets/videos/$key.mp4';
 	}
 
+        inline static public function _video(key:String, ?library:String)
+	{
+		trace('assets/videos/$key.mp4');
+	  return 'assets/videos/$key.mp4';
+	}
+
 	static public function listSongsToCache()
 	{
 		// We need to query OpenFlAssets, not the file system, because of Polymod.
