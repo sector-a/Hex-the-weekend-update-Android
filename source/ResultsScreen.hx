@@ -230,10 +230,10 @@ class ResultsScreen extends FlxSubState
 
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, PlayState.instance.handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
-			if (PlayState.instance.coolingHandler != null)
+			if (PlayState.instance.coolingVideo != null)
 			{
-				PlayState.instance.coolingHandler.bitmap.stop();
-				PlayState.instance.coolingHandler.kill();
+				PlayState.instance.coolingVideo.bitmap.stop();
+				PlayState.instance.coolingVideo.bitmap.visible = false;
 			}
 			if (PlayState.isStoryMode)
 			{
@@ -269,10 +269,10 @@ class ResultsScreen extends FlxSubState
 
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, PlayState.instance.handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
-			if (PlayState.instance.coolingHandler != null)
+			if (PlayState.instance.coolingVideo != null)
 			{
-				PlayState.instance.coolingHandler.bitmap.stop();
-				PlayState.instance.coolingHandler.kill();
+				PlayState.instance.coolingVideo.bitmap.stop();
+				PlayState.instance.coolingVideo.bitmap.visible = false;
 			}
 
 			PlayState.isStoryMode = false;
