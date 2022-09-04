@@ -269,7 +269,9 @@ class PauseSubState extends MusicBeatSubstate
 						Debug.logTrace("removing cooling video");
 						PlayState.instance.remove(PlayState.instance.coolingVideo);
 						PlayState.instance.coolingVideo.destroy();
-						PlayState.instance.coolingVideo.bitmap.kill();
+						//PlayState.instance.coolingVideo.bitmap.kill();
+						PlayState.instance.coolingVideo.bitmap.stop();
+						PlayState.instance.coolingVideo.bitmap.visible = false;
 						PlayState.instance.coolingVideo.bitmap.dispose();
 					}
 					if (PlayState.isStoryMode)

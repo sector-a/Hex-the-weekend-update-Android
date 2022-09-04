@@ -69,7 +69,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT #if android virtualpad.buttonA.justPressed #end)
+		if (controls.ACCEPT #if android || virtualpad.buttonA.justPressed #end)
 		{
 			endBullshit();
 		}
