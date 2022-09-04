@@ -90,6 +90,25 @@ class DFJKOption extends Option
 	}
 }
 
+class About extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.switchState(new options.AboutState());
+		return true;
+	}
+	private override function updateDisplay():String
+	{
+		return "Android Port Credits";
+	}
+
+}
+
 class MobileCOption extends Option
 {
 	public function new(desc:String)

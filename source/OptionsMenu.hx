@@ -160,6 +160,7 @@ class OptionsMenu extends FlxSubState
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 				new ScoreScreen("Show the score screen after the end of a song"),
 				new ShowInput("Display every single input on the score screen."),
+				new About("Android port credits"),
 			]),
 			new OptionCata(935, 40, "Saves", [
 				#if desktop // new ReplayOption("View saved song replays."),
