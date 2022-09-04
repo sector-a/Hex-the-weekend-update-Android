@@ -720,6 +720,18 @@ class BruhADiagWindow extends MusicBeatState
 
 	public override function update(elapsed:Float)
 	{
+		#if mobile
+		var justTouched:Bool = false;
+
+		for (touch in FlxG.touches.list)
+		{
+			justTouched = false;
+			
+			if (touch.justReleased){
+				justTouched = true;
+			}
+		}
+	    #end
 		if (!waitingForDiag && !waitingForFade && started)
 		{
 			lineIndex++;
@@ -727,7 +739,7 @@ class BruhADiagWindow extends MusicBeatState
 		}
 		else if (waitingForDiag)
 		{
-			if (FlxG.keys.justPressed.ENTER)
+			if (FlxG.keys.justPressed.ENTER #if android || justTouched #end)
 			{
 				skipDiag();
 			}
@@ -746,7 +758,7 @@ class BruhADiagWindow extends MusicBeatState
 			escapeText.alpha -= elapsed * 0.4;
 		}
 
-		if (FlxG.keys.justPressed.ESCAPE && escapeText.alpha == 0)
+		if ((FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end) && escapeText.alpha == 0)
 		{
 			FlxTween.tween(escapeText, {alpha: 1, y: 680}, 3, {
 				ease: FlxEase.elasticOut,
@@ -756,7 +768,7 @@ class BruhADiagWindow extends MusicBeatState
 				}
 			});
 		}
-		else if (FlxG.keys.justPressed.ESCAPE && escapeText.alpha > 0)
+		else if ((FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end) && escapeText.alpha > 0)
 		{
 			if (escapeTween != null)
 			{

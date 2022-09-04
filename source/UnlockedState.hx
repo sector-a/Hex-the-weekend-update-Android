@@ -16,7 +16,7 @@ class UnlockedState extends MusicBeatState
 
 	public override function update(elapsed)
 	{
-	 	#if mobile
+	    #if mobile
 		var justTouched:Bool = false;
 
 		for (touch in FlxG.touches.list)
