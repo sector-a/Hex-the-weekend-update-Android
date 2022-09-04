@@ -315,7 +315,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	override function update(elapsed:Float)
+	public override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
