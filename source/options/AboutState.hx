@@ -1,119 +1,52 @@
 package options;
 
-import flixel.tweens.FlxTween;
+import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import openfl.utils.Assets;
-import flixel.ui.FlxButton;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import lime.utils.Assets;
 
 using StringTools;
 
 class AboutState extends MusicBeatState
 {
-	var bg0:FlxSprite;
-	var bg1:FlxSprite;
-	var bg2:FlxSprite;
-	var bg3:FlxSprite;
+	var logoBl:FlxSprite;
 
-	var amogusSprite:FlxSprite;
+	var text:FlxText;
 
 	override function create()
 	{
-		var bgasset = Assets.getBitmapData(Paths.image('bgcredit'));
 
-		bg0 = new FlxSprite(0, 0).loadGraphic(bgasset);
-		bg1 = new FlxSprite(0, 0).loadGraphic(bgasset);
-		bg2 = new FlxSprite(0, 0).loadGraphic(bgasset);
-		bg3 = new FlxSprite(0, 0).loadGraphic(bgasset);
+		// LOAD MUSIC
 
-		add(bg0);
-		add(bg1);
-		add(bg2);
-		add(bg3);
+		// LOAD CHARACTERS
 
-		amogusSprite = new FlxSprite();
-		amogusSprite.visible = false;
-		add(amogusSprite);
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		
+		logoBl = new FlxSprite(-150, -100);
+		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		logoBl.antialiasing = true;
+		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+		logoBl.animation.play('bump');
+		logoBl.updateHitbox();
+		logoBl.screenCenter();
+		logoBl.y = logoBl.y - 100;
 
-		var bgfront:FlxSprite = new FlxSprite().loadGraphic(Paths.image('creditfront'));
-		add(bgfront);
+		text = new FlxText(0, 0, 0, "ported by sirox and goldie-5" + "\n" + "", 64);
+		text.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		text.screenCenter();
+		text.y = text.y + 150;
 
-		var button = new FlxButton(16, 16, "", ()-> {
-			FlxG.switchState(new OptionsMenu());
-		}).loadGraphic('assets/android/back.png');
-		add(button);
+		add(bg);
+		add(logoBl);
+		add(text);
 
-		move();
  
 		super.create();
-	}
-
-	function move(?tween) {
-		if (FlxG.random.bool(30))
-			amogus();
-
-		bg0.x = 0;
-		bg0.y = 0;
-
-		bg1.x = -1280;
-		bg1.y = 0;
-
-		bg2.x = 0;
-		bg2.y = -720;
-
-		bg3.x = -1280;
-		bg3.y = -720;
-
-		var duration:Float = 50;
-
-		// bg 1
-		FlxTween.num(0, 1280, duration, {onComplete: move}, num -> {
-			bg0.x = num;
-		});
-		FlxTween.num(0, 720, duration, {}, num -> {
-			bg0.y = num;
-		});
-
-		// bg 2
-		FlxTween.num(-1280, 0, duration, {}, num -> {
-			bg1.x = num;
-		});
-		FlxTween.num(0, 720, duration, {}, num -> {
-			bg1.y = num;
-		});
-
-		// bg 3
-		FlxTween.num(0, 1280, duration, {}, num -> {
-			bg2.x = num;
-		});
-		FlxTween.num(-720, 0, duration, {}, num -> {
-			bg2.y = num;
-		});
-
-		// bg 4  
-		FlxTween.num(-1280, 0, duration, {}, num -> {
-			bg3.x = num;
-		});
-		FlxTween.num(-720, 0, duration, {}, num -> {
-			bg3.y = num;
-		});
-	}
-
-	function amogus() {
-		amogusSprite.visible = true;
-		amogusSprite.loadGraphic('assets/android/amogus.png');
-		amogusSprite.x = -amogusSprite.width;
-		amogusSprite.y = (FlxG.height / 2) - (amogusSprite.height / 2);
-
-		var dur = 10;
-
-		FlxTween.angle(amogusSprite, 0, 960, dur);
-
-		FlxTween.num(-amogusSprite.width, FlxG.width + amogusSprite.width, dur, {}, (num) -> {
-			amogusSprite.x = num;
-		});
-
-		FlxG.sound.play('assets/android/amogus.ogg');
 	}
 
 
