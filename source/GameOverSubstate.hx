@@ -89,7 +89,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.stageTesting = false;
 		}
 
-		if (controls.BACK #if android virtualpad.buttonB.justPressed #end)
+		if (controls.BACK #if android || virtualpad.buttonB.justPressed #end)
 		{
 			FlxG.sound.music.stop();
 
