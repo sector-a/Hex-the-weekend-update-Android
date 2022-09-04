@@ -1,7 +1,6 @@
 package;
 
-import ui.FlxVirtualPad;
-import HEXDialogueState;
+import HEXDialougeState;
 import flixel.util.FlxSpriteUtil;
 #if FEATURE_LUAMODCHART
 import LuaClass.LuaCamera;
@@ -81,9 +80,6 @@ import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
-#end
-#if mobileC
-import ui.Mobilecontrols;
 #end
 
 using StringTools;
@@ -168,12 +164,6 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
-	#if mobileC
-	var mcontrols:Mobilecontrols; 
-	#end
-	
-	var skipb:FlxVirtualPad;
-	
 	public var vocals:FlxSound;
 
 	public static var isSM:Bool = false;
@@ -563,7 +553,7 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_LUAMODCHART
 		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
+		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
 		if (isSM)
 			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
@@ -573,7 +563,7 @@ class PlayState extends MusicBeatState
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
 
-		Debug.logInfo('Searching for mod chart? Go fuck yourself then');
+		Debug.logInfo('Searching for mod chart? ($executeModchart) at ${Paths.lua('songs/${PlayState.SONG.songId}/modchart')}');
 
 		if (executeModchart)
 		{
@@ -680,8 +670,8 @@ class PlayState extends MusicBeatState
 			Debug.logTrace("starting vis");
 			if (coolingHandler == null)
 			{
-				coolingHandler = new VideoHandler();
-				coolingHandler.playVideo(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
+				coolingHandler = new MP4Handler();
+				coolingHandler.playMP4(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
 			}
 			else
 			{
@@ -1267,35 +1257,6 @@ class PlayState extends MusicBeatState
 		laneunderlay.cameras = [camNotes];
 		laneunderlayOpponent.cameras = [camNotes];
 
-		#if mobileC
-			mcontrols = new Mobilecontrols();
-			switch (mcontrols.mode)
-			{
-				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
-					controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
-				case HITBOX:
-					controls.setHitBox(mcontrols._hitbox);
-				default:
-			}
-			trackedinputs = controls.trackedinputs;
-			controls.trackedinputs = [];
-
-			var camcontrol = new FlxCamera();
-			FlxG.cameras.add(camcontrol);
-			camcontrol.bgColor.alpha = 0;
-			mcontrols.cameras = [camcontrol];
-
-			//mcontrols.visible = false;
-			mcontrols.alpha = 0;
-
-			add(mcontrols);
-			
-			skipb = new FlxVirtualPad(NONE, A);
-			skipb.alpha = 0.75;
-			skipb.cameras = [camcontrol];
-		   add(skipb);
-		#end
-
 		if (isStoryMode)
 		{
 			doof.cameras = [camHUD];
@@ -1587,20 +1548,6 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
-	  #if mobileC
-		//mcontrols.visible = true;
-		new FlxTimer().start(0.1, function(tmr:FlxTimer)
-		{
-			mcontrols.alpha += 0.1;
-			if (mcontrols.alpha != 0.7){
-				tmr.reset(0.1);
-			}
-			else{
-				trace('aweseom.');
-			}
-		});
-		#end
-		
 		Debug.logTrace("start count");
 		inCutscene = false;
 
@@ -1924,7 +1871,7 @@ class PlayState extends MusicBeatState
 
 	public var previousRate = songMultiplier;
 
-	public var coolingHandler:VideoHandler = null;
+	public var coolingHandler:MP4Handler = null;
 
 	function startSong():Void
 	{
@@ -2027,7 +1974,7 @@ class PlayState extends MusicBeatState
 		{
 			skipActive = true;
 			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = "Press A to Skip Intro";
+			skipText.text = "Press Space to Skip Intro";
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
@@ -2823,7 +2770,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.screenCenter(X);
 		var pauseBind = FlxKey.fromString(FlxG.save.data.pauseBind);
 		var gppauseBind = FlxKey.fromString(FlxG.save.data.gppauseBind);
-		if ((FlxG.keys.anyJustPressed([pauseBind])) #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause && !cannotDie)
+		if ((FlxG.keys.anyJustPressed([pauseBind])) && startedCountdown && canPause && !cannotDie)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2987,11 +2934,10 @@ class PlayState extends MusicBeatState
 		}
 		if (skipActive && Conductor.songPosition >= skipTo)
 		{
-		  remove(skipb);
 			remove(skipText);
 			skipActive = false;
 		}
-		if (FlxG.keys.justPressed.SPACE #if android || skipb.buttonA.justPressed #end && skipActive)
+		if (FlxG.keys.justPressed.SPACE && skipActive)
 		{
 			var rremove:Array<Array<Dynamic>> = [];
 			for (i in reactiveNotes)
@@ -3903,20 +3849,6 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-	  #if mobileC
-		//aaa
-		new FlxTimer().start(0.1, function(tmr:FlxTimer)
-		{
-			mcontrols.alpha -= 0.1;
-			if (mcontrols.alpha != 0){
-				tmr.reset(0.1);
-			}
-			else{
-				trace('aweseom.');
-			}
-		});
-		#end
-		
 		endingSong = true;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
