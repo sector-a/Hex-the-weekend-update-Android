@@ -287,7 +287,9 @@ class FreeplayState extends MusicBeatState
 				{
 					FlxG.sound.cache(Paths.inst(songId));
 				});
+                        #if FEATURE_FILESYSTEM
 			}
+                        #end
 			if (i != 0)
 			{
 				LoadingScreen.progress = Math.round((i / list.length) * 100);
@@ -295,12 +297,12 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	function addSong(songName:String, weekNum:Int, songCharacter:String)
+	public function addSong(songName:String, weekNum:Int, songCharacter:String)
 	{
 		songs.push(new FreeplaySongMetadata(songName, weekNum, songCharacter));
 	}
 
-	function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
 	{
 		if (songCharacters == null)
 			songCharacters = ['dad'];
@@ -315,7 +317,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public override function update(elapsed:Float)
+        override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
