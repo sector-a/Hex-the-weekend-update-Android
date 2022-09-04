@@ -385,9 +385,9 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		#end
-
+		
 		new LuaSprite(sprite, toBeCalled).Register(lua);
+		#end
 
 		return toBeCalled;
 	}

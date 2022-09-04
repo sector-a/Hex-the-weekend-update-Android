@@ -119,7 +119,7 @@ class OptionsMenu extends FlxSubState
 	public var descBack:FlxSprite;
 	
 	#if mobileC
-	var virualpad:FlxVirtualPad;
+	var virtualpad:FlxVirtualPad;
 	#end
 
 	override function create()
