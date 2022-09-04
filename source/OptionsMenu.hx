@@ -17,6 +17,10 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+#if mobileC
+import ui.FlxVirtualPad;
+import flixel.FlxCamera;
+#end
 
 class OptionCata extends FlxSprite
 {
@@ -113,6 +117,10 @@ class OptionsMenu extends FlxSubState
 
 	public var descText:FlxText;
 	public var descBack:FlxSprite;
+	
+	#if mobileC
+	var virualpad:FlxVirtualPad;
+	#end
 
 	override function create()
 	{
@@ -243,7 +251,13 @@ class OptionsMenu extends FlxSubState
 		selectedOption = selectedCat.options[0];
 
 		#if mobileC
-		addVirtualPad(UP_DOWN, A_B);
+		virtualpad = new FlxVirtualPad(FULL, A_B);
+		virtualpad.alpha = 0.75;
+		add(virtualpad);
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		virtualpad.cameras = [camcontrol];
 		#end
 
 		super.create();
@@ -359,14 +373,14 @@ class OptionsMenu extends FlxSubState
 		var any = false;
 		var escape = false;
 
-		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false);
-		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false);
-		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false);
-		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false);
-		down = FlxG.keys.justPressed.DOWN || (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false);
+		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false) #if android || virtualpad.buttonA.justPressed #end;
+		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false) #if android || virtualpad.buttonRight.justPressed #end;
+		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false) #if android || virtualpad.buttonLeft.justPressed #end;
+		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false) #if android || virtualpad.buttonUp.justPressed #end;
+		down = FlxG.keys.justPressed.DOWN || (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false) #if android || virtualpad.buttonDown.justPressed #end;
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
-		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false);
+		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false) #if android || virtualpad.buttonB.justPressed #end;
 
 		if (selectedCat != null && !isInCat)
 		{

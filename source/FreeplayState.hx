@@ -656,7 +656,7 @@ class FreeplayState extends MusicBeatState
 		else
 			diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 
-		#if PRELOAD_ALL
+		#if (PRELOAD_ALL && !mobile)
 		if (songs[curSelected].songCharacter == "sm")
 		{
 			var data = songs[curSelected];
@@ -668,6 +668,8 @@ class FreeplayState extends MusicBeatState
 		}
 		else
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		#else
+		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		#end
 
 		var hmm;

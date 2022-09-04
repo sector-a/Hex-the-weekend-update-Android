@@ -7,6 +7,10 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+#if mobileC
+import ui.FlxVirtualPad;
+import flixel.FlxCamera;
+#end
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -14,6 +18,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camFollow:FlxObject;
 
 	var stageSuffix:String = "";
+	
+	
 
 	public function new(x:Float, y:Float)
 	{
@@ -49,7 +55,13 @@ class GameOverSubstate extends MusicBeatSubstate
 		bf.playAnim('firstDeath');
 		
 		#if mobileC
-		addVirtualPad(NONE, A_B);
+		virtualpad = new FlxVirtualPad(NONE, A_B);
+		virtualpad.alpha = 0.75;
+		add(virtualpad);
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		virtualpad.cameras = [camcontrol];
 		#end
 	}
 
@@ -57,7 +69,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT)
+		if (controls.ACCEPT #if android virtualpad.buttonA.justPressed #end)
 		{
 			endBullshit();
 		}
@@ -77,7 +89,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.stageTesting = false;
 		}
 
-		if (controls.BACK)
+		if (controls.BACK #if android virtualpad.buttonB.justPressed #end)
 		{
 			FlxG.sound.music.stop();
 

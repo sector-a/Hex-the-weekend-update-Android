@@ -321,9 +321,11 @@ class PlayState extends MusicBeatState
 
 	public static var highestCombo:Int = 0;
 
-	public var coolingVideo:FlxSprite;
+	public var coolingVideo:VideoSprite = null;
 
 	public var executeModchart = false;
+	
+	var videoIsPlaying:Bool = false;
 
 	// Animation common suffixes
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
@@ -561,9 +563,9 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_LUAMODCHART
 		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
+		executeModchart = openfl.utils.Assets.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
 		if (isSM)
-			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
+			executeModchart = openfl.utils.Assets.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
 		#end
@@ -670,26 +672,13 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			coolingVideo = new FlxSprite(-24, -224);
+			coolingVideo = new VideoSprite(-24, -224);
+			coolingVideo.playVideo(Paths.video('coolingVisualizer'));
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
 			add(coolingVideo);
 
 			Debug.logTrace("starting vis");
-			if (coolingHandler == null)
-			{
-				coolingHandler = new VideoSprite();
-				coolingHandler.playVideo(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
-			}
-			else
-			{
-				coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
-
-				coolingVideo.setGraphicSize(945, 472);
-				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingHandler.bitmap.resume();
-			}
 			coolingVideo.alpha = 0;
 		}
 
@@ -1287,11 +1276,6 @@ class PlayState extends MusicBeatState
 			mcontrols.alpha = 0;
 
 			add(mcontrols);
-			
-			skipb = new FlxVirtualPad(NONE, A);
-			skipb.alpha = 0.75;
-			skipb.cameras = [camcontrol];
-		   add(skipb);
 		#end
 
 		if (isStoryMode)
@@ -1922,8 +1906,6 @@ class PlayState extends MusicBeatState
 
 	public var previousRate = songMultiplier;
 
-	public var coolingHandler:VideoSprite = null;
-
 	function startSong():Void
 	{
 		if (laneunderlay != null)
@@ -2038,7 +2020,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-			coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			Debug.logTrace("doing the thing");
 			FlxTween.tween(coolingVideo, {alpha: 1}, 1);
 		}
@@ -2394,7 +2376,7 @@ class PlayState extends MusicBeatState
 
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
-				coolingHandler.bitmap.pause();
+				coolingVideo.bitmap.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2444,8 +2426,8 @@ class PlayState extends MusicBeatState
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
 				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingHandler.bitmap.resume();
+				coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingVideo.bitmap.resume();
 			}
 
 			if (startTimer != null)
@@ -3035,8 +3017,8 @@ class PlayState extends MusicBeatState
 			Conductor.rawPosition = FlxG.sound.music.time;
 			if (coolingVideo != null)
 			{
-				if (!coolingHandler.bitmap.isPlaying && !paused && !endingSong)
-					coolingHandler.bitmap.resume();
+				if (!coolingVideo.bitmap.isPlaying && !paused && !endingSong)
+					coolingVideo.bitmap.resume();
 			}
 			// sync
 			/*@:privateAccess

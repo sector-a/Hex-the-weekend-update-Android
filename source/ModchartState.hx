@@ -25,6 +25,7 @@ import llua.LuaL;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flash.system.System;
 
 class ModchartState
 {
@@ -427,10 +428,12 @@ class ModchartState
 		}
 
 		var path = Paths.lua('songs/${PlayState.SONG.songId}/modchart');
+		#if FEATURE_STEPMANIA
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/modchart.lua";
+		#end
 
-		var result = LuaL.dofile(lua, path); // execute le file
+		var result = LuaL.dostring(lua, openfl.utils.Assets.getText(path)); // execute le file
 
 		if (result != 0)
 		{
@@ -495,6 +498,20 @@ class ModchartState
 		{
 			PlayState.instance.lScrl[lane] = scrollspeed;
 		});
+		
+		Lua_helper.add_callback(lua, "initModule", function(path:String)
+        {
+            if (openfl.utils.Assets.exists(path)) {
+	            var shit = LuaL.dostring(lua, openfl.utils.Assets.getText(path)); // (sirox) if won't work, then i understood lua docs wrongly ._. in that case need to try dostring.
+	            if (shit != 0)
+		        {
+			        Application.current.window.alert("LUA COMPILE ERROR:\n" + Lua.tostring(lua, shit), "Kade Engine Modcharts");
+			        System.exit(0);
+		        }
+	        } else {
+	            trace("Module doesn't exist!");
+	        }
+        });
 
 		Lua_helper.add_callback(lua, "setNoteWiggle", function(wiggleId)
 		{
