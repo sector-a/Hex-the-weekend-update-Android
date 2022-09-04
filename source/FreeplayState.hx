@@ -295,7 +295,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String)
+	function addSong(songName:String, weekNum:Int, songCharacter:String)
 	{
 		songs.push(new FreeplaySongMetadata(songName, weekNum, songCharacter));
 	}
