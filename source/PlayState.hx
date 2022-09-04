@@ -678,7 +678,7 @@ class PlayState extends MusicBeatState
 			Debug.logTrace("starting vis");
 			if (coolingHandler == null)
 			{
-				coolingHandler = new VideoHandler();
+				coolingHandler = new VideoSprite();
 				coolingHandler.playVideo(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
 			}
 			else
