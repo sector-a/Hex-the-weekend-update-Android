@@ -46,8 +46,10 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
-          haxelib install lime
-          haxelib install openfl
+          haxelib install lime 7.9.0
+          haxelib install openfl 9.1.0
+          haxelib set lime 7.9.0
+          haxelib set openfl 9.1.0 setup lime
           haxelib git flixel https://github.com/VegethYT/flixel.git
           haxelib git extension-webm https://github.com/Sirox228/extension-webm.git
           haxelib run lime setup flixel
