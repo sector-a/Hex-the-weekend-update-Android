@@ -1,5 +1,6 @@
 package;
 
+import ui.FlxVirtualPad;
 import HEXDialougeState;
 import flixel.util.FlxSpriteUtil;
 #if FEATURE_LUAMODCHART
@@ -80,6 +81,9 @@ import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
+#end
+#if mobileC
+import ui.Mobilecontrols;
 #end
 
 using StringTools;
@@ -164,6 +168,10 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
+	
 	public var vocals:FlxSound;
 
 	public static var isSM:Bool = false;
@@ -563,7 +571,7 @@ class PlayState extends MusicBeatState
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
 
-		Debug.logInfo('Searching for mod chart? ($executeModchart) at ${Paths.lua('songs/${PlayState.SONG.songId}/modchart')}');
+		Debug.logInfo('Searching for mod chart? Go fuck yourself then');
 
 		if (executeModchart)
 		{
@@ -1257,6 +1265,35 @@ class PlayState extends MusicBeatState
 		laneunderlay.cameras = [camNotes];
 		laneunderlayOpponent.cameras = [camNotes];
 
+		#if mobileC
+			mcontrols = new Mobilecontrols();
+			switch (mcontrols.mode)
+			{
+				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+					controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+				case HITBOX:
+					controls.setHitBox(mcontrols._hitbox);
+				default:
+			}
+			trackedinputs = controls.trackedinputs;
+			controls.trackedinputs = [];
+
+			var camcontrol = new FlxCamera();
+			FlxG.cameras.add(camcontrol);
+			camcontrol.bgColor.alpha = 0;
+			mcontrols.cameras = [camcontrol];
+
+			//mcontrols.visible = false;
+			mcontrols.alpha = 0;
+
+			add(mcontrols);
+			
+			skipb = new FlxVirtualPad(NONE, A);
+			skipb.alpha = 0.75;
+			skipb.cameras = [camcontrol];
+		   add(skipb);
+		#end
+
 		if (isStoryMode)
 		{
 			doof.cameras = [camHUD];
@@ -1548,6 +1585,20 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+	  #if mobileC
+		//mcontrols.visible = true;
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+		{
+			mcontrols.alpha += 0.1;
+			if (mcontrols.alpha != 0.7){
+				tmr.reset(0.1);
+			}
+			else{
+				trace('aweseom.');
+			}
+		});
+		#end
+		
 		Debug.logTrace("start count");
 		inCutscene = false;
 
@@ -1974,7 +2025,7 @@ class PlayState extends MusicBeatState
 		{
 			skipActive = true;
 			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = "Press Space to Skip Intro";
+			skipText.text = "Press BACK to Skip Intro";
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
@@ -2770,7 +2821,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.screenCenter(X);
 		var pauseBind = FlxKey.fromString(FlxG.save.data.pauseBind);
 		var gppauseBind = FlxKey.fromString(FlxG.save.data.gppauseBind);
-		if ((FlxG.keys.anyJustPressed([pauseBind])) && startedCountdown && canPause && !cannotDie)
+		if ((FlxG.keys.anyJustPressed([pauseBind])) #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause && !cannotDie && !skipActive)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2937,7 +2988,7 @@ class PlayState extends MusicBeatState
 			remove(skipText);
 			skipActive = false;
 		}
-		if (FlxG.keys.justPressed.SPACE && skipActive)
+		if (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end && skipActive)
 		{
 			var rremove:Array<Array<Dynamic>> = [];
 			for (i in reactiveNotes)
@@ -3849,6 +3900,20 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+	  #if mobileC
+		//aaa
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+		{
+			mcontrols.alpha -= 0.1;
+			if (mcontrols.alpha != 0){
+				tmr.reset(0.1);
+			}
+			else{
+				trace('aweseom.');
+			}
+		});
+		#end
+		
 		endingSong = true;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
