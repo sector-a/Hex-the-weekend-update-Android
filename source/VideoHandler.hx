@@ -13,7 +13,7 @@ import flixel.FlxG;
 
 using StringTools;
 
-class VideoHandler
+class WebmVideoHandler
 {
 	public var netStream:NetStream;
 	public var video:Video;
