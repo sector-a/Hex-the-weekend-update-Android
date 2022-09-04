@@ -19,7 +19,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var stageSuffix:String = "";
 	
-	
+	#if mobileC
+        var virtualpad:FlxVirtualPad;
+        #end
 
 	public function new(x:Float, y:Float)
 	{
