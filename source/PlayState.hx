@@ -4070,6 +4070,7 @@ class PlayState extends MusicBeatState
 					{
                                                 var video:VideoSprite = new VideoSprite(0, 0);
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
+                                                video.setGraphicSize(1280, 720);
                                                 video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
