@@ -1274,8 +1274,7 @@ class PlayState extends MusicBeatState
 			camcontrol.bgColor.alpha = 0;
 			mcontrols.cameras = [camcontrol];
 
-			//mcontrols.visible = false;
-			mcontrols.alpha = 0;
+			mcontrols.visible = false;
 
 			add(mcontrols);
 		#end
@@ -1571,18 +1570,8 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
-	  #if mobileC
-		//mcontrols.visible = true;
-		new FlxTimer().start(0.1, function(tmr:FlxTimer)
-		{
-			mcontrols.alpha += 0.1;
-			if (mcontrols.alpha != 0.7){
-				tmr.reset(0.1);
-			}
-			else{
-				trace('aweseom.');
-			}
-		});
+	        #if mobileC
+		mcontrols.visible = true;
 		#end
 		
 		Debug.logTrace("start count");
@@ -3887,18 +3876,8 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-	  #if mobileC
-		//aaa
-		new FlxTimer().start(0.1, function(tmr:FlxTimer)
-		{
-			mcontrols.alpha -= 0.1;
-			if (mcontrols.alpha != 0){
-				tmr.reset(0.1);
-			}
-			else{
-				trace('aweseom.');
-			}
-		});
+	        #if mobileC
+		mcontrols.visible = false;
 		#end
 		
 		endingSong = true;
