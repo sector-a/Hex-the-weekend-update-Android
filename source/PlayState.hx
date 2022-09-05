@@ -676,7 +676,7 @@ class PlayState extends MusicBeatState
 		{
 			coolingVideo = new VideoSprite(-24, -224);
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        coolingVideo.setGraphicSize(945, 472);
+                        coolingVideo.bitmap.setGraphicSize(945, 472);
 		        var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			coolingVideo.bitmap.resume();
@@ -4070,7 +4070,7 @@ class PlayState extends MusicBeatState
 					{
                                                 var video:VideoSprite = new VideoSprite(0, 0);
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
-                                                video.setGraphicSize(1280, 720);
+                                                video.bitmap.setGraphicSize(1280, 720);
                                                 video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
