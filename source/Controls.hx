@@ -274,7 +274,15 @@ class Controls extends FlxActionSet
 
 public var trackedinputs:Array<FlxActionInput> = [];
 
-	public function addbutton(action:FlxActionDigital, button:Govno, state:FlxInputState) {
+	public function addhitbox(action:FlxActionDigital, button:Govno, state:FlxInputState) {
+		var input = new FlxActionInputDigitalIFlxInput(button, state);
+		trackedinputs.push(input);
+		
+		action.add(input);
+		//action.addInput(button, state);
+	}
+
+        public function addbutton(action:FlxActionDigital, button:FlxButton, state:FlxInputState) {
 		var input = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputs.push(input);
 		
@@ -284,10 +292,10 @@ public var trackedinputs:Array<FlxActionInput> = [];
 	
 	public function setHitBox(hitbox:Hitbox) 
 	{
-		inline forEachBound(Control.UP, (action, state) -> addbutton(action, hitbox.buttonUp, state));
-		inline forEachBound(Control.DOWN, (action, state) -> addbutton(action, hitbox.buttonDown, state));
-		inline forEachBound(Control.LEFT, (action, state) -> addbutton(action, hitbox.buttonLeft, state));
-		inline forEachBound(Control.RIGHT, (action, state) -> addbutton(action, hitbox.buttonRight, state));	
+		inline forEachBound(Control.UP, (action, state) -> addhitbox(action, hitbox.buttonUp, state));
+		inline forEachBound(Control.DOWN, (action, state) -> addhitbox(action, hitbox.buttonDown, state));
+		inline forEachBound(Control.LEFT, (action, state) -> addhitbox(action, hitbox.buttonLeft, state));
+		inline forEachBound(Control.RIGHT, (action, state) -> addhitbox(action, hitbox.buttonRight, state));	
 	}
 
 	
