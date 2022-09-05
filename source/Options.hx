@@ -595,6 +595,34 @@ class ShitMsOption extends Option
 	}
 }
 
+class GradientHitbox extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.gradientHitboxes = !FlxG.save.data.gradientHitboxes;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Gradient Hitboxes: < " + (FlxG.save.data.gradientHitboxes ? "on" : "off") + " >";
+	}
+}
+
 class RoundAccuracy extends Option
 {
 	public function new(desc:String)
