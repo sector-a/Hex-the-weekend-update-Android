@@ -2531,7 +2531,7 @@ class PlayState extends MusicBeatState
 		if (!loadedCompletely)
 			return;
 
-                keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
+                //keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
 
 		var rtemove = [];
 
