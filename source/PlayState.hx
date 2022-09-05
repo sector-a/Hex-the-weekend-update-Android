@@ -4064,7 +4064,13 @@ class PlayState extends MusicBeatState
 
 					if (isCooling)
 					{
-						switchState(new StoryScene("animated_cutscene"));
+                                                var video:VideoHandler = new VideoHandler();
+                                                video.playVideo(Paths.video("animated_cutscene"));
+                                                handler.finishCallback = function()
+		                                {
+			                                switchState(new BruhADiagWindow(SONG.songId));
+		                                };
+                                                add(video);
 					}
 					else
 					{
