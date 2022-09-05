@@ -4,6 +4,7 @@ import flixel.group.FlxGroup;
 import ui.Hitbox;
 import ui.FlxVirtualPad;
 import flixel.ui.FlxButton;
+import ui.FlxButton as Govno;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
 import flixel.input.FlxInput;
@@ -273,7 +274,7 @@ class Controls extends FlxActionSet
 
 public var trackedinputs:Array<FlxActionInput> = [];
 
-	public function addbutton(action:FlxActionDigital, button:FlxButton, state:FlxInputState) {
+	public function addbutton(action:FlxActionDigital, button:Govno, state:FlxInputState) {
 		var input = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputs.push(input);
 		
