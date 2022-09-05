@@ -8,6 +8,7 @@ import flixel.input.gamepad.FlxGamepad;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxSubState;
+import flixel.FlxState;
 #if mobileC
 import ui.FlxVirtualPad;
 #end
@@ -79,8 +80,6 @@ class MusicBeatSubstate extends FlxSubState
 		Debug.logTrace("switching");
 		if (trans)
 		{
-			transitionOut(function()
-			{
 				lastState = this;
 				if (goToLoading)
 				{
@@ -95,7 +94,6 @@ class MusicBeatSubstate extends FlxSubState
 					FlxG.game._requestedState = nextState;
 				}
 				Debug.logTrace("switched");
-			});
 		}
 		else
 		{
