@@ -674,10 +674,12 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			coolingVideo = new VideoSprite(-24, -224);
-			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        coolingVideo.bitmap.setGraphicSize(945, 472);
-		        var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
+                        var coolingHandler:VideoHandler = new videoHandler();
+                        coolingHandler.playVideo(Paths.video('coolingVisualizer'), false, false);
+			coolingVideo = new VideoSprite(-24, -224).loadGraphic(coolingHandler.bitmapData);
+			//coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
+                        coolingVideo.setGraphicSize(945, 472);
+		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
 			add(coolingVideo);
