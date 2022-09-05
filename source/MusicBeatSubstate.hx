@@ -67,6 +67,51 @@ class MusicBeatSubstate extends FlxSubState
 	public function addVirtualPad(?DPad, ?Action){};
 	#end
 
+        public function switchState(nextState:MusicBeatState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false)
+	{
+		if (fuckYou)
+			return;
+		fuckYou = true;
+		Debug.logTrace("switching");
+		if (trans)
+		{
+			transitionOut(function()
+			{
+				lastState = this;
+				if (goToLoading)
+				{
+					var state:FlxState = new LoadingScreen(nextState, song);
+
+					@:privateAccess
+					FlxG.game._requestedState = state;
+				}
+				else
+				{
+					@:privateAccess
+					FlxG.game._requestedState = nextState;
+				}
+				Debug.logTrace("switched");
+			});
+		}
+		else
+		{
+			lastState = this;
+			if (goToLoading)
+			{
+				var state:FlxState = new LoadingScreen(nextState, song);
+
+				@:privateAccess
+				FlxG.game._requestedState = state;
+			}
+			else
+			{
+				@:privateAccess
+				FlxG.game._requestedState = nextState;
+			}
+			Debug.logTrace("switched");
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
 		// everyStep();
