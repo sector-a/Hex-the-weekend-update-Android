@@ -2534,7 +2534,7 @@ class PlayState extends MusicBeatState
                 if (mcontrols.mode == HITBOX) {
                         keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
                 } else if (mcontrols.mode != KEYBOARD) {
-                        keys = [mcontrols._virtualpad.buttonLeft.pressed, mcontrols._virtualpad.buttonDown.pressed, mcontrols._virtualpad.buttonUp.pressed, mcontrols._virtualpad.buttonRight.pressed];
+                        keys = [mcontrols._virtualPad.buttonLeft.pressed, mcontrols._virtualPad.buttonDown.pressed, mcontrols._virtualPad.buttonUp.pressed, mcontrols._virtualPad.buttonRight.pressed];
                 }
 
 		var rtemove = [];
