@@ -50,9 +50,6 @@ class Hitbox extends FlxSpriteGroup
 		buttonDown = null;
 		buttonUp = null;
 		buttonRight = null;
-		buttonDodge = null;
-		buttonAttackLeft = null;
-		buttonAttackRight = null;
 	}
 
 	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
