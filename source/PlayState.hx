@@ -4071,7 +4071,7 @@ class PlayState extends MusicBeatState
                                                 FlxG.camera.zoom = 1.0;
                                                 var video:VideoSprite = new VideoSprite(0, 0);
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
-                                                video.bitmap.setGraphicSize(1280, 720);
+                                                //video.bitmap.setGraphicSize(1280, 720);
                                                 video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
