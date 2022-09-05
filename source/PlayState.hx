@@ -1782,7 +1782,7 @@ class PlayState extends MusicBeatState
 		// first convert it from openfl to a flixel key code
 		// then use FlxKey to get the key's name based off of the FlxKey dictionary
 		// this makes it work for special characters
-
+                #if !android
 		@:privateAccess
 		var key = FlxKey.toStringMap.get(evt.keyCode);
 
@@ -1812,6 +1812,9 @@ class PlayState extends MusicBeatState
 			if (binds[i].toLowerCase() == key.toLowerCase())
 				data = i;
 		}
+                #else
+                keys = [mcontrols._hitbox.buttonLeft.justPressed, mcontrols._hitbox.buttonDown.justPressed, mcontrols._hitbox.buttonUp.justPressed, mcontrols._hitbox.buttonRight.justPressed];
+                #end
 		if (data == -1)
 		{
 			trace("couldn't find a keybind with the code " + key);
@@ -4714,12 +4717,12 @@ class PlayState extends MusicBeatState
 		{
 			if (!PlayStateChangeables.botPlay)
 			{
-				if (keys[spr.ID]
+				if (holdArray[spr.ID]
 					&& spr.animation.curAnim.name != 'confirm'
 					&& spr.animation.curAnim.name != 'pressed'
 					&& !spr.animation.curAnim.name.startsWith('dirCon'))
 					spr.playAnim('pressed', false);
-				if (!keys[spr.ID])
+				if (!holdArray[spr.ID])
 					spr.playAnim('static', false);
 			}
 			else if (FlxG.save.data.cpuStrums)
