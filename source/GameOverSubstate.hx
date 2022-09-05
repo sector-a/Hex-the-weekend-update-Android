@@ -163,7 +163,7 @@ class GameOverSubstate extends MusicBeatSubstate
 					}
 					PlayState.instance.restart();
 					PlayState.stageTesting = false;
-					close();
+					switchState(new PlayState());
 				});
 			});
 		}
