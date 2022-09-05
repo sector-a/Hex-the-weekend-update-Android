@@ -1161,6 +1161,53 @@ class ScoreScreen extends Option
 	}
 }
 
+class HitboxOpacity extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool
+	{
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Hitboxes Opacity: < " + FlxG.save.data.hitboxOpacity + " >";
+	}
+
+	override function right():Bool
+	{
+		if (FlxG.save.data.hitboxOpacity > 1.0)
+		{
+			FlxG.save.data.hitboxOpacity = 0.0;
+		}
+		else
+			FlxG.save.data.hitboxOpacity = FlxG.save.data.hitboxOpacity + 0.01;
+
+		return true;
+	}
+
+	override function left():Bool
+	{
+		if (FlxG.save.data.hitboxOpacity > 1.0)
+			FlxG.save.data.hitboxOpacity = 0.0;
+		else
+			FlxG.save.data.hitboxOpacity = FlxG.save.data.hitboxOpacity - 0.01;
+
+		return true;
+	}
+
+	override function getValue():String
+	{
+		return updateDisplay();
+	}
+}
+
 class FPSCapOption extends Option
 {
 	public function new(desc:String)
