@@ -498,6 +498,11 @@ class ModchartState
 		{
 			PlayState.instance.lScrl[lane] = scrollspeed;
 		});
+
+                Lua_helper.add_callback(lua, "getText", function(path:String)
+		{
+			return openfl.utils.Assets.getText(path);
+		});
 		
 		Lua_helper.add_callback(lua, "initModule", function(path:String)
         {
