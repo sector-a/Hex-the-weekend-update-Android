@@ -1731,7 +1731,7 @@ class PlayState extends MusicBeatState
 		return null;
 	}
 
-	var keys = [false, false, false, false];
+        var keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
 
 	public function releaseInput(evt:KeyboardEvent):Void // handles releases
 	{
@@ -1782,7 +1782,7 @@ class PlayState extends MusicBeatState
 		// first convert it from openfl to a flixel key code
 		// then use FlxKey to get the key's name based off of the FlxKey dictionary
 		// this makes it work for special characters
-                #if !android
+
 		@:privateAccess
 		var key = FlxKey.toStringMap.get(evt.keyCode);
 
@@ -1812,9 +1812,7 @@ class PlayState extends MusicBeatState
 			if (binds[i].toLowerCase() == key.toLowerCase())
 				data = i;
 		}
-                #else
-                keys = [mcontrols._hitbox.buttonLeft.justPressed, mcontrols._hitbox.buttonDown.justPressed, mcontrols._hitbox.buttonUp.justPressed, mcontrols._hitbox.buttonRight.justPressed];
-                #end
+
 		if (data == -1)
 		{
 			trace("couldn't find a keybind with the code " + key);
@@ -2536,6 +2534,8 @@ class PlayState extends MusicBeatState
 	{
 		if (!loadedCompletely)
 			return;
+
+                keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
 
 		var rtemove = [];
 
