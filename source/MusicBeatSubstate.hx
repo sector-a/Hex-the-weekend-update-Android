@@ -14,6 +14,10 @@ import ui.FlxVirtualPad;
 
 class MusicBeatSubstate extends FlxSubState
 {
+        public static var lastState:FlxState;
+
+	public var fuckYou:Bool = false;
+
 	public function new()
 	{
 		super();
