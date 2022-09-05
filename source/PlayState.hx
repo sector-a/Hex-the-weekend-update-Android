@@ -676,6 +676,10 @@ class PlayState extends MusicBeatState
 		{
 			coolingVideo = new VideoSprite(-24, -224);
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
+                        coolingVideo.setGraphicSize(945, 472);
+		        var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
+			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingVideo.bitmap.resume();
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
 			add(coolingVideo);
