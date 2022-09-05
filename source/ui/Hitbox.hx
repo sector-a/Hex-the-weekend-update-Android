@@ -2,7 +2,7 @@ package ui;
 
 import openfl.display.Shape;
 import openfl.display.BitmapData;
-import android.flixel.FlxButton;
+import ui.FlxButton;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
