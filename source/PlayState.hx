@@ -4066,7 +4066,7 @@ class PlayState extends MusicBeatState
 					{
                                                 var video:VideoHandler = new VideoHandler();
                                                 video.playVideo(Paths.video("animated_cutscene"));
-                                                handler.finishCallback = function()
+                                                video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
 		                                };
