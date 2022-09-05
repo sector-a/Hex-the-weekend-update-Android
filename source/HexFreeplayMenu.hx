@@ -412,6 +412,15 @@ class HexFreeplayMenu extends HexMenuState
 			getItemByName("diff").changeOutGraphic("freeplay/difficulty_" + CoolUtil.difficultyFromInt(selectedDiff).toLowerCase());
 		}
 
+                if (FlxG.android.justReleased.BACK) {
+                        PlayState.SONG = songs[6].diffs.get(CoolUtil.difficultyFromInt(selectedDiff).toLowerCase()).data;
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = selectedDiff;
+			PlayState.storyWeek = 10;
+
+			switchState(new PlayState());
+                }
+
 		if (controls.ACCEPT)
 		{
 			if (selectedIndex >= 5 && !bad)
