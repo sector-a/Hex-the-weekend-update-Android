@@ -6,6 +6,9 @@ class KadeEngineData
 {
 	public static function initSave()
 	{
+                if (FlxG.save.data.gradientHitboxes == null)
+                        FlxG.save.data.gradientHitboxes = true;
+
 		if (FlxG.save.data.weekUnlocked == null)
 			FlxG.save.data.weekUnlocked = 7;
 
