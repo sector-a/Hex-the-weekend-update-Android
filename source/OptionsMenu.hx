@@ -159,7 +159,7 @@ class OptionsMenu extends FlxSubState
 				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
-                                new GradientHitboxes("Toggle hitboxes gradient"),
+                                new GradientHitbox("Toggle hitboxes gradient"),
                                 new HitboxOpacity("toggle hitboxes alpha (opacity)"),
 			]),
 			new OptionCata(640, 40, "Misc", [
