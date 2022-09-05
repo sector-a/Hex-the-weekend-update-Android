@@ -300,6 +300,8 @@ class PlayState extends MusicBeatState
 
 	public static var Stage:Stage;
 
+        public var coolingHandler:VideoHandler;
+
 	public static var repPresses:Int = 0;
 	public static var repReleases:Int = 0;
 
@@ -674,9 +676,10 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-                        var coolingHandler:VideoHandler = new videoHandler();
+			coolingVideo = new VideoSprite(-24, -224);
+                        coolingHandler = new videoHandler();
                         coolingHandler.playVideo(Paths.video('coolingVisualizer'), false, false);
-			coolingVideo = new VideoSprite(-24, -224).loadGraphic(coolingHandler.bitmapData);
+                        coolingVideo.loadGraphic(coolingHandler.bitmapData);
 			//coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
                         coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
