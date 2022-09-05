@@ -1720,7 +1720,7 @@ class PlayState extends MusicBeatState
 		return null;
 	}
 
-        var keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
+        var keys = [false, false, false, false];
 
 	public function releaseInput(evt:KeyboardEvent):Void // handles releases
 	{
