@@ -518,6 +518,11 @@ class ModchartState
 	        }
         });
 
+                Lua_helper.add_callback(lua, "saveLog", function(thing:Dynamic)
+		{
+			FT.trace(thing, Std.string(thing));
+		});
+
 		Lua_helper.add_callback(lua, "setNoteWiggle", function(wiggleId)
 		{
 			PlayState.instance.camNotes.setFilters([new ShaderFilter(luaWiggles.get(wiggleId).shader)]);
