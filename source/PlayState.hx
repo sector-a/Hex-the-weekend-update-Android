@@ -1,7 +1,7 @@
 package;
 
 import ui.FlxVirtualPad;
-import HEXDialougeState;
+import HEXDialogueState;
 import flixel.util.FlxSpriteUtil;
 #if FEATURE_LUAMODCHART
 import LuaClass.LuaCamera;
@@ -172,6 +172,8 @@ class PlayState extends MusicBeatState
 	var mcontrols:Mobilecontrols; 
 	#end
 	
+	var skipb:FlxVirtualPad;
+	
 	public var vocals:FlxSound;
 
 	public static var isSM:Bool = false;
@@ -300,8 +302,6 @@ class PlayState extends MusicBeatState
 
 	public static var Stage:Stage;
 
-        public var coolingHandler:VideoSprite;
-
 	public static var repPresses:Int = 0;
 	public static var repReleases:Int = 0;
 
@@ -323,11 +323,9 @@ class PlayState extends MusicBeatState
 
 	public static var highestCombo:Int = 0;
 
-	public var coolingVideo:VideoSprite = null;
+	public var coolingVideo:FlxSprite;
 
 	public var executeModchart = false;
-	
-	var videoIsPlaying:Bool = false;
 
 	// Animation common suffixes
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
@@ -565,11 +563,9 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_LUAMODCHART
 		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = openfl.utils.Assets.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
-		#if FEATURE_STEPMANIA
+		executeModchart = openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
 		if (isSM)
-			executeModchart = openfl.utils.Assets.exists(pathToSm + "/modchart.lua");
-		#end
+			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
 		#end
@@ -676,18 +672,26 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			coolingVideo = new VideoSprite(-24, -224);
-                        coolingHandler = new VideoSprite();
-                        coolingHandler.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
-			//coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        coolingVideo.setGraphicSize(945, 472);
-		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
+			coolingVideo = new FlxSprite(-24, -224);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
 			add(coolingVideo);
 
 			Debug.logTrace("starting vis");
+			if (coolingHandler == null)
+			{
+				coolingHandler = new MP4Handler();
+				coolingHandler.playMP4(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
+			}
+			else
+			{
+				coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
+
+				coolingVideo.setGraphicSize(945, 472);
+				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
+				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingHandler.bitmap.resume();
+			}
 			coolingVideo.alpha = 0;
 		}
 
@@ -1281,9 +1285,15 @@ class PlayState extends MusicBeatState
 			camcontrol.bgColor.alpha = 0;
 			mcontrols.cameras = [camcontrol];
 
-			mcontrols.visible = false;
+			//mcontrols.visible = false;
+			mcontrols.alpha = 0;
 
 			add(mcontrols);
+			
+			skipb = new FlxVirtualPad(NONE, A);
+			skipb.alpha = 0.75;
+			skipb.cameras = [camcontrol];
+		   add(skipb);
 		#end
 
 		if (isStoryMode)
@@ -1577,8 +1587,18 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
-	        #if mobileC
-		mcontrols.visible = true;
+	  #if mobileC
+		//mcontrols.visible = true;
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+		{
+			mcontrols.alpha += 0.1;
+			if (mcontrols.alpha != 0.7){
+				tmr.reset(0.1);
+			}
+			else{
+				trace('aweseom.');
+			}
+		});
 		#end
 		
 		Debug.logTrace("start count");
@@ -1727,7 +1747,7 @@ class PlayState extends MusicBeatState
 		return null;
 	}
 
-        var keys = [false, false, false, false];
+	var keys = [false, false, false, false];
 
 	public function releaseInput(evt:KeyboardEvent):Void // handles releases
 	{
@@ -1808,7 +1828,6 @@ class PlayState extends MusicBeatState
 			if (binds[i].toLowerCase() == key.toLowerCase())
 				data = i;
 		}
-
 		if (data == -1)
 		{
 			trace("couldn't find a keybind with the code " + key);
@@ -1904,6 +1923,8 @@ class PlayState extends MusicBeatState
 	public var bar:FlxSprite;
 
 	public var previousRate = songMultiplier;
+
+	public var coolingHandler:MP4Handler = null;
 
 	function startSong():Void
 	{
@@ -2006,7 +2027,7 @@ class PlayState extends MusicBeatState
 		{
 			skipActive = true;
 			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = "Press BACK to Skip Intro";
+			skipText.text = "Press A to Skip Intro";
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
@@ -2019,7 +2040,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			Debug.logTrace("doing the thing");
 			FlxTween.tween(coolingVideo, {alpha: 1}, 1);
 		}
@@ -2375,7 +2396,7 @@ class PlayState extends MusicBeatState
 
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
-				coolingVideo.bitmap.pause();
+				coolingHandler.bitmap.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2425,8 +2446,8 @@ class PlayState extends MusicBeatState
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
 				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingVideo.bitmap.resume();
+				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingHandler.bitmap.resume();
 			}
 
 			if (startTimer != null)
@@ -2530,12 +2551,6 @@ class PlayState extends MusicBeatState
 	{
 		if (!loadedCompletely)
 			return;
-
-                if (mcontrols.mode == HITBOX) {
-                        keys = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
-                } else if (mcontrols.mode != KEYBOARD) {
-                        keys = [mcontrols._virtualPad.buttonLeft.pressed, mcontrols._virtualPad.buttonDown.pressed, mcontrols._virtualPad.buttonUp.pressed, mcontrols._virtualPad.buttonRight.pressed];
-                }
 
 		var rtemove = [];
 
@@ -2808,7 +2823,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.screenCenter(X);
 		var pauseBind = FlxKey.fromString(FlxG.save.data.pauseBind);
 		var gppauseBind = FlxKey.fromString(FlxG.save.data.gppauseBind);
-		if ((FlxG.keys.anyJustPressed([pauseBind])) #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause && !cannotDie && !skipActive)
+		if ((FlxG.keys.anyJustPressed([pauseBind])) #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause && !cannotDie)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2972,10 +2987,11 @@ class PlayState extends MusicBeatState
 		}
 		if (skipActive && Conductor.songPosition >= skipTo)
 		{
+		  remove(skipb);
 			remove(skipText);
 			skipActive = false;
 		}
-		if (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end && skipActive)
+		if (FlxG.keys.justPressed.SPACE #if android || skipb.buttonA.justPressed #end && skipActive)
 		{
 			var rremove:Array<Array<Dynamic>> = [];
 			for (i in reactiveNotes)
@@ -3022,8 +3038,8 @@ class PlayState extends MusicBeatState
 			Conductor.rawPosition = FlxG.sound.music.time;
 			if (coolingVideo != null)
 			{
-				if (!coolingVideo.bitmap.isPlaying && !paused && !endingSong)
-					coolingVideo.bitmap.resume();
+				if (!coolingHandler.bitmap.isPlaying && !paused && !endingSong)
+					coolingHandler.bitmap.resume();
 			}
 			// sync
 			/*@:privateAccess
@@ -3887,8 +3903,18 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-	        #if mobileC
-		mcontrols.visible = false;
+	  #if mobileC
+		//aaa
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+		{
+			mcontrols.alpha -= 0.1;
+			if (mcontrols.alpha != 0){
+				tmr.reset(0.1);
+			}
+			else{
+				trace('aweseom.');
+			}
+		});
 		#end
 		
 		endingSong = true;
@@ -4075,15 +4101,7 @@ class PlayState extends MusicBeatState
 
 					if (isCooling)
 					{
-                                                FlxG.camera.zoom = 1.0;
-                                                var video:VideoSprite = new VideoSprite(0, 0);
-                                                video.playVideo(Paths.video("animated_cutscene"), false, true, true);
-                                                //video.bitmap.setGraphicSize(1280, 720);
-                                                video.finishCallback = function()
-		                                {
-			                                switchState(new BruhADiagWindow(SONG.songId));
-		                                };
-                                                add(video);
+						switchState(new StoryScene("animated_cutscene"));
 					}
 					else
 					{
@@ -4526,6 +4544,8 @@ class PlayState extends MusicBeatState
 			});
 		}
 
+		if ((false && !FlxG.keys.justPressed.ANY))
+		{
 			// PRESSES, check for note hits
 			if (pressArray.contains(true) && generatedMusic)
 			{
@@ -4651,7 +4671,7 @@ class PlayState extends MusicBeatState
 				for (i in anas)
 					if (i != null)
 						replayAna.anaArray.push(i); // put em all there
-
+		}
 		if (PlayStateChangeables.botPlay)
 			notes.forEachAlive(function(daNote:Note)
 			{
@@ -4715,12 +4735,12 @@ class PlayState extends MusicBeatState
 		{
 			if (!PlayStateChangeables.botPlay)
 			{
-				if (holdArray[spr.ID]
+				if (keys[spr.ID]
 					&& spr.animation.curAnim.name != 'confirm'
 					&& spr.animation.curAnim.name != 'pressed'
 					&& !spr.animation.curAnim.name.startsWith('dirCon'))
 					spr.playAnim('pressed', false);
-				if (!holdArray[spr.ID])
+				if (!keys[spr.ID])
 					spr.playAnim('static', false);
 			}
 			else if (FlxG.save.data.cpuStrums)

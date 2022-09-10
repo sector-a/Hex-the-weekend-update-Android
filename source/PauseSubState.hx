@@ -18,10 +18,6 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-#if mobileC
-import ui.FlxVirtualPad;
-import flixel.FlxCamera;
-#end
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -45,10 +41,6 @@ class PauseSubState extends MusicBeatSubstate
 	var startOffset:Float = PlayState.songOffset;
 
 	var bg:FlxSprite;
-	
-	#if mobileC
-	var virtualpad:FlxVirtualPad;
-	#end
 
 	public function new()
 	{
@@ -144,13 +136,7 @@ class PauseSubState extends MusicBeatSubstate
 		cameras = [PlayState.instance.camHUD];
 		
 		#if mobileC
-		virtualpad = new FlxVirtualPad(UP_DOWN, A);
-		virtualpad.alpha = 0.75;
-		add(virtualpad);
-		var camcontrol = new FlxCamera();
-		FlxG.cameras.add(camcontrol);
-		camcontrol.bgColor.alpha = 0;
-		virtualpad.cameras = [camcontrol];
+		addVirtualPad(UP_DOWN, A);
 		#end
 	}
 
@@ -199,16 +185,16 @@ class PauseSubState extends MusicBeatSubstate
 			songPath = PlayState.pathToSm;
 		#end
 
-		if (controls.UP_P || upPcontroller #if android || virtualpad.buttonUp.justPressed #end)
+		if (controls.UP_P || upPcontroller)
 		{
 			changeSelection(-1);
 		}
-		else if (controls.DOWN_P || downPcontroller #if android || virtualpad.buttonDown.justPressed #end)
+		else if (controls.DOWN_P || downPcontroller)
 		{
 			changeSelection(1);
 		}
 
-		if ((controls.ACCEPT #if android || virtualpad.buttonA.justPressed #end) && !FlxG.keys.pressed.ALT)
+		if (controls.ACCEPT && !FlxG.keys.pressed.ALT)
 		{
 			var daSelected:String = menuItems[curSelected];
 
@@ -264,15 +250,13 @@ class PauseSubState extends MusicBeatSubstate
 
 					FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, PlayState.instance.handleInput);
 					FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
-					if (PlayState.instance.coolingVideo != null)
+					if (PlayState.instance.coolingHandler != null)
 					{
 						Debug.logTrace("removing cooling video");
 						PlayState.instance.remove(PlayState.instance.coolingVideo);
 						PlayState.instance.coolingVideo.destroy();
-						//PlayState.instance.coolingVideo.bitmap.kill();
-						PlayState.instance.coolingVideo.bitmap.stop();
-						PlayState.instance.coolingVideo.bitmap.visible = false;
-						PlayState.instance.coolingVideo.bitmap.dispose();
+						PlayState.instance.coolingHandler.kill();
+						PlayState.instance.coolingHandler.bitmap.dispose();
 					}
 					if (PlayState.isStoryMode)
 					{
