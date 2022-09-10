@@ -409,8 +409,8 @@ class ModchartState
 		trace('opening a lua state (because we are cool :))');
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
-		trace("Lua version: " + Lua.version());
-		trace("LuaJIT version: " + Lua.versionJIT());
+		FT.trace(Lua.version(), "Lua.version()");
+		FT.trace(Lua.versionJIT(), "Lua.versionJIT()");
 		Lua.init_callbacks(lua);
 
 		// shaders = new Array<LuaShader>();
