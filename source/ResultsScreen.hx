@@ -97,8 +97,12 @@ class ResultsScreen extends FlxSubState
 		comboText.color = FlxColor.WHITE;
 		comboText.scrollFactor.set();
 		add(comboText);
-
+		
+		#if android
+		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Touch the screen to continue.');
+		#else
 		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ${KeyBinds.gamepad ? 'A' : 'ENTER'} to continue.');
+		#end
 		contText.size = 28;
 		contText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		contText.color = FlxColor.WHITE;
@@ -181,10 +185,6 @@ class ResultsScreen extends FlxSubState
 		});
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
-		
-		#if mobileC
-		addVirtualPad(NONE, A);
-		#end
 
 		super.create();
 	}
@@ -198,8 +198,21 @@ class ResultsScreen extends FlxSubState
 				music.volume += 0.01 * elapsed;
 
 		// keybinds
+		
+		#if mobile
+		var justTouched:Bool = false;
 
-		if (controls.ACCEPT)
+		for (touch in FlxG.touches.list)
+		{
+			justTouched = false;
+			
+			if (touch.justReleased){
+				justTouched = true;
+			}
+		}
+		#end
+
+		if (FlxG.keys.justPressed.ENTER #if android || justTouched #end)
 		{
 			if (music != null)
 				music.fadeOut(0.3);
