@@ -374,6 +374,7 @@ class PlayState extends MusicBeatState
 		startingSong = false;
 		health = 1;
 
+                FT.trace(restartedSong, "creating...");
 		create();
 	}
 
@@ -636,9 +637,8 @@ class PlayState extends MusicBeatState
 			+ " | Misses: "
 			+ misses, iconRPC);
 		#end
-
 		// var gameCam:FlxCamera = FlxG.camera;
-
+                FT.trace(restartedSong, "cameras time...");
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -648,14 +648,20 @@ class PlayState extends MusicBeatState
 		camNotes.height = 1300;
 		camNotes.bgColor.alpha = 0;
 
+                FT.trace(restartedSong, "created cameras pooooooog...");
+
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camSustains);
 		FlxG.cameras.add(camNotes);
 		FlxG.cameras.add(camHUD);
 
+                FT.trace(restartedSong, "added lmao...");
+
 		camHUD.zoom = PlayStateChangeables.zoom;
 
 		FlxCamera.defaultCameras = [camGame];
+
+                FT.trace(restartedSong, "default cam is set pog...");
 
 		persistentUpdate = true;
 		persistentDraw = true;
