@@ -115,6 +115,7 @@
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="linc_luajit" />
 	<haxelib name="hxvm-luajit" />
+        <haxelib name="hxCodec" />
         <haxelib name='extension-androidtools' if='android' />
         <architecture name="armv7" exclude="arm64" if="android" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
