@@ -1910,9 +1910,9 @@ class PlayState extends MusicBeatState
 
 	public var bar:FlxSprite;
 
-	public var previousRate = ssongMultiplier;
+	public var previousRate = songMultiplier;
 	
-  public var coolingHandler:MP4Handler = null;
+        public var coolingHandler:MP4Handler = null;
 
 	function startSong():Void
 	{
