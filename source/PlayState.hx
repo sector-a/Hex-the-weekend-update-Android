@@ -300,8 +300,6 @@ class PlayState extends MusicBeatState
 
 	public static var Stage:Stage;
 
-        public var coolingHandler:VideoSprite;
-
 	public static var repPresses:Int = 0;
 	public static var repReleases:Int = 0;
 
@@ -677,14 +675,12 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			coolingVideo = new VideoSprite(-24, -224);
-                        coolingHandler = new VideoSprite();
-                        coolingHandler.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
-			//coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
+			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
                         coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
+                        coolingVideo.updateHitbox();
 			add(coolingVideo);
 
 			Debug.logTrace("starting vis");
@@ -4078,7 +4074,8 @@ class PlayState extends MusicBeatState
                                                 FlxG.camera.zoom = 1.0;
                                                 var video:VideoSprite = new VideoSprite(0, 0);
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
-                                                //video.bitmap.setGraphicSize(1280, 720);
+                                                video.setGraphicSize(1280, 720);
+                                                video.updateHitbox();
                                                 video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
