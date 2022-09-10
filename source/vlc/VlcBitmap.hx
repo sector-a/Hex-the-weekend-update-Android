@@ -1,20 +1,16 @@
 package vlc;
 
 import flixel.FlxG;
-import openfl.system.Capabilities;
 #if cpp
 import cpp.NativeArray;
 import cpp.UInt8;
-import haxe.ValueException;
 import haxe.io.Bytes;
-import lime.app.Application;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
-import openfl.geom.Rectangle;
 import vlc.LibVLC;
 
 /**
@@ -65,7 +61,7 @@ class VlcBitmap extends Bitmap
 	//-----------------------------------------------------------------------------------
 	var bufferMem:Array<UInt8>;
 	#if cpp
-	var libvlc:LibVLC;
+	var libvlc:LibVLC = LibVLC.create();
 	#end
 
 	// ===================================================================================
@@ -80,7 +76,6 @@ class VlcBitmap extends Bitmap
 	var bmdBuf2:BitmapData;
 	var oldTime:Int;
 	var flipBuffer:Bool;
-	var frameRect:Rectangle;
 	var screenWidth:Float;
 	var screenHeight:Float;
 
@@ -91,31 +86,22 @@ class VlcBitmap extends Bitmap
 		super(null, null, true);
 
 		#if cpp
-		init();
+		if (stage != null)
+			init();
+		else
+			addEventListener(Event.ADDED_TO_STAGE, init);
 		#end
-	}
-
-	function mThread()
-	{
-		init();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	function init()
+	function init(?e:Event):Void
 	{
-		#if cpp
-		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-		#end
-	}
+		if (hasEventListener(Event.ADDED_TO_STAGE))
+			removeEventListener(Event.ADDED_TO_STAGE, init);
 
-	function onAddedToStage(e:Event):Void
-	{
-		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-
-		libvlc = LibVLC.create();
 		stage.addEventListener(Event.RESIZE, onResize);
-		stage.addEventListener(Event.ENTER_FRAME, vLoop);
+		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -152,8 +138,6 @@ class VlcBitmap extends Bitmap
 		#if cpp
 		isPlaying = false;
 		libvlc.stop();
-		// if (disposeOnStop)
-		// dispose();
 
 		if (onStop != null)
 			onStop();
@@ -186,13 +170,6 @@ class VlcBitmap extends Bitmap
 		libvlc.setPosition(seekTotime);
 		if (onSeek != null)
 			onSeek();
-		#end
-	}
-
-	public function getPos()
-	{
-		#if cpp
-		return libvlc.getPosition();
 		#end
 	}
 
@@ -291,18 +268,32 @@ class VlcBitmap extends Bitmap
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	function onResize(e:Event):Void
+	function onResize(?e:Event):Void
 	{
-		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		set_width(calc(0));
+		set_height(calc(1));
+	}
+
+	public function calc(Ind:Int):Float
+	{
+		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
+		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
+
+		if (appliedHeight > FlxG.stage.stageHeight)
+			appliedHeight = FlxG.stage.stageHeight;
+
+		if (appliedWidth > FlxG.stage.stageWidth)
+			appliedWidth = FlxG.stage.stageWidth;
+
+		switch (Ind)
 		{
-			set_width(FlxG.stage.stageHeight * (16 / 9));
-			set_height(FlxG.stage.stageHeight);
+			case 0:
+				return appliedWidth;
+			case 1:
+				return appliedHeight;
 		}
-		else
-		{
-			set_width(FlxG.stage.stageWidth);
-			set_height(FlxG.stage.stageWidth / (16 / 9));
-		}
+
+		return 0;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -324,13 +315,8 @@ class VlcBitmap extends Bitmap
 		if (texture2 != null)
 			texture2.dispose();
 
-		// BitmapData
-		bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
-		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
-
-		// (Stage3D)
-		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
-		// this.bitmapData = BitmapData.fromTexture(texture);
+		texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+		bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
@@ -358,7 +344,7 @@ class VlcBitmap extends Bitmap
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	function vLoop(e)
+	function onEnterFrame(?e:Event):Void
 	{
 		#if cpp
 		checkFlags();
@@ -372,28 +358,22 @@ class VlcBitmap extends Bitmap
 	{
 		var cTime = Lib.getTimer();
 
-		if ((cTime - oldTime) > 28) // min 28 ms between renders, but this is not a good way to do it...
+		// with fast gpu rendering now i think we can make the fps higher (35 to 60)
+		if ((cTime - oldTime) > 16) // min 16 ms between renders, but this is not a good way to do it...
 		{
 			oldTime = cTime;
 
 			#if cpp
-			// if (isPlaying && texture != null) // (Stage3D)
-			if (isPlaying)
+			if (isPlaying && texture != null)
 			{
 				try
 				{
 					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
 					if (bufferMem != null)
 					{
-						// BitmapData
-						// libvlc.getPixelData() sometimes is null and the exe hangs ...
-						if (libvlc.getPixelData() != null)
-							bitmapData.setPixels(frameRect, Bytes.ofData(bufferMem));
-
-						// (Stage3D)
-						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
-						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
-						// this.width--;
+						texture.uploadFromByteArray(Bytes.ofData(cast(bufferMem)), 0);
+						width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
+						width--;
 					}
 				}
 				catch (e:Error)
@@ -489,9 +469,7 @@ class VlcBitmap extends Bitmap
 			onProgress();
 	}
 
-	function statusOnPositionChanged(newPos:Int)
-	{
-	}
+	function statusOnPositionChanged(newPos:Int) {}
 
 	function statusOnSeekableChanged(newPos:Int)
 	{
@@ -499,13 +477,9 @@ class VlcBitmap extends Bitmap
 			onSeek();
 	}
 
-	function statusOnForward()
-	{
-	}
+	function statusOnForward() {}
 
-	function statusOnBackward()
-	{
-	}
+	function statusOnBackward() {}
 
 	function onDisplay()
 	{
@@ -565,7 +539,11 @@ class VlcBitmap extends Bitmap
 		libvlc.stop();
 		#end
 
-		stage.removeEventListener(Event.ENTER_FRAME, vLoop);
+		if (stage.hasEventListener(Event.RESIZE))
+			stage.removeEventListener(Event.RESIZE, onResize);
+
+		if (stage.hasEventListener(Event.ENTER_FRAME))
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
 		if (texture != null)
 		{
