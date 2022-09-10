@@ -15,6 +15,8 @@ import Config;
 #if lime
 import lime.system.Clipboard;
 #end
+import flixel.addons.display.FlxBackdrop;
+
 
 using StringTools;
 
