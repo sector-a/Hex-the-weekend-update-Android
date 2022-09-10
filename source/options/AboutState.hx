@@ -47,7 +47,6 @@ class AboutState extends MusicBeatState
 		text.screenCenter();
 		text.y = text.y + 150;
 
-		add(menuBG);
 		add(logoBl);
 		add(text);
 
