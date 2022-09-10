@@ -674,7 +674,7 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			coolingVideo = new VideoSprite(-24, -224);
+			//coolingVideo = yourmom
 			coolingVideo = new FlxSprite(-24, -224);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
