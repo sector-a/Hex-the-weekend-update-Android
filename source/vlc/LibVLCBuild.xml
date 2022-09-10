@@ -12,4 +12,13 @@
 		<lib name='${CPP_DIR}/lib/libvlccore.lib' if='windows'/>
 	</target>
 	
+        <target id='haxe' tool='linker' if="linux">
+		<lib name='${CPP_DIR}/lib/linux/libvlc.so.5' />
+		<lib name='${CPP_DIR}/lib/linux/libvlccore.so.7' />
+	</target>
+
+	<target id="haxe" tool="linker" if="android">
+		<lib name="../../../../libvlc-v7.so" if="HXCPP_ARMV7" />
+		<lib name="../../../../libvlc-64.so" if="HXCPP_ARM64" />
+	</target>
 </xml>
