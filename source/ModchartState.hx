@@ -518,9 +518,9 @@ class ModchartState
 	        }
         });
 
-                Lua_helper.add_callback(lua, "saveLog", function(thing:Dynamic)
+                Lua_helper.add_callback(lua, "saveLog", function(thing:Dynamic, name:String)
 		{
-			FT.trace(thing, Std.string(thing));
+			FT.trace(thing, name);
 		});
 
 		Lua_helper.add_callback(lua, "setNoteWiggle", function(wiggleId)
