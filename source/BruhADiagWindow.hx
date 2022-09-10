@@ -709,7 +709,7 @@ class BruhADiagWindow extends MusicBeatState
 		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 		add(canvas);
 
-		escapeText = new FlxText(12, 740, 0, "Press escape again to skip!", 24);
+		escapeText = new FlxText(12, 740, 0, "Press BACK again to skip!", 24);
 		escapeText.setFormat(Paths.font("Gotham_Black_Regular.ttf"), 32, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		escapeText.borderSize = 2;
 		add(escapeText);
