@@ -67,7 +67,7 @@ class AboutState extends MusicBeatState
 		#if android
 		if (FlxG.android.justReleased.BACK)
 		{
-			FlxG.switchState(new HexOptionsDirect());
+			FlxG.switchState(new HexOptionsDirect(HexMenuState.loadHexMenu("options-menu")));
 		}
 		#end
 
