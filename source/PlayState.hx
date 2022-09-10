@@ -300,6 +300,8 @@ class PlayState extends MusicBeatState
 
 	public static var Stage:Stage;
 
+        public var coolingHandler:VideoSprite;
+
 	public static var repPresses:Int = 0;
 	public static var repReleases:Int = 0;
 
@@ -321,7 +323,7 @@ class PlayState extends MusicBeatState
 
 	public static var highestCombo:Int = 0;
 
-	public var coolingVideo:FlxSprite;
+	public var coolingVideo:VideoSprite = null;
 
 	public var executeModchart = false;
 	
@@ -674,27 +676,18 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			//coolingVideo = yourmom
-			coolingVideo = new FlxSprite(-24, -224);
+			coolingVideo = new VideoSprite(-24, -224);
+                        coolingHandler = new VideoSprite();
+                        coolingHandler.playVideo(Paths.video('coolingVisualizer'), false, false);
+                        coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
+			//coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
+                        coolingVideo.setGraphicSize(945, 472);
+		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
 			add(coolingVideo);
 
 			Debug.logTrace("starting vis");
-			if (coolingHandler == null)
-			{
-				coolingHandler = new MP4Handler();
-				coolingHandler.playMP4(Paths.video('coolingVisualizer'), null, coolingVideo, false, false, true);
-			}
-			else
-			{
-				coolingVideo.loadGraphic(coolingHandler.bitmap.bitmapData);
-
-				coolingVideo.setGraphicSize(945, 472);
-				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingHandler.bitmap.resume();
-			}
 			coolingVideo.alpha = 0;
 		}
 
@@ -1911,8 +1904,6 @@ class PlayState extends MusicBeatState
 	public var bar:FlxSprite;
 
 	public var previousRate = songMultiplier;
-	
-        public var coolingHandler:MP4Handler = null;
 
 	function startSong():Void
 	{
@@ -2028,7 +2019,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-			coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			Debug.logTrace("doing the thing");
 			FlxTween.tween(coolingVideo, {alpha: 1}, 1);
 		}
@@ -2384,7 +2375,7 @@ class PlayState extends MusicBeatState
 
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
-				coolingHandler.bitmap.pause();
+				coolingVideo.bitmap.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2434,8 +2425,8 @@ class PlayState extends MusicBeatState
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
 				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingHandler.bitmap.resume();
+				coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingVideo.bitmap.resume();
 			}
 
 			if (startTimer != null)
@@ -3031,8 +3022,8 @@ class PlayState extends MusicBeatState
 			Conductor.rawPosition = FlxG.sound.music.time;
 			if (coolingVideo != null)
 			{
-				if (!coolingHandler.bitmap.isPlaying && !paused && !endingSong)
-					coolingHandler.bitmap.resume();
+				if (!coolingVideo.bitmap.isPlaying && !paused && !endingSong)
+					coolingVideo.bitmap.resume();
 			}
 			// sync
 			/*@:privateAccess
@@ -4084,7 +4075,15 @@ class PlayState extends MusicBeatState
 
 					if (isCooling)
 					{
-						switchState(new StoryScene("animated_cutscene"));
+                                                FlxG.camera.zoom = 1.0;
+                                                var video:VideoSprite = new VideoSprite(0, 0);
+                                                video.playVideo(Paths.video("animated_cutscene"), false, true, true);
+                                                //video.bitmap.setGraphicSize(1280, 720);
+                                                video.finishCallback = function()
+		                                {
+			                                switchState(new BruhADiagWindow(SONG.songId));
+		                                };
+                                                add(video);
 					}
 					else
 					{
