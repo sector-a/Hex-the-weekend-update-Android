@@ -44,6 +44,9 @@
 
 	<classpath name="source" />
 
+        <ndll name="c++_shared" if="android" />
+	<ndll name="vlc" if="android" />
+
 	<assets path="assets/shared/images/hitbox"/>
 	
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
