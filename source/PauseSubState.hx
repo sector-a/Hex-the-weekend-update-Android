@@ -18,6 +18,10 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+#if mobileC
+import ui.FlxVirtualPad;
+import flixel.FlxCamera;
+#end
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -41,6 +45,10 @@ class PauseSubState extends MusicBeatSubstate
 	var startOffset:Float = PlayState.songOffset;
 
 	var bg:FlxSprite;
+	
+	#if mobileC
+	var virtualpad:FlxVirtualPad;
+	#end
 
 	public function new()
 	{
@@ -136,7 +144,13 @@ class PauseSubState extends MusicBeatSubstate
 		cameras = [PlayState.instance.camHUD];
 		
 		#if mobileC
-		addVirtualPad(UP_DOWN, A);
+		virtualpad = new FlxVirtualPad(UP_DOWN, A);
+		virtualpad.alpha = 0.75;
+		add(virtualpad);
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		virtualpad.cameras = [camcontrol];
 		#end
 	}
 
@@ -185,16 +199,16 @@ class PauseSubState extends MusicBeatSubstate
 			songPath = PlayState.pathToSm;
 		#end
 
-		if (controls.UP_P || upPcontroller)
+		if (controls.UP_P || upPcontroller #if android || virtualpad.buttonUp.justPressed #end)
 		{
 			changeSelection(-1);
 		}
-		else if (controls.DOWN_P || downPcontroller)
+		else if (controls.DOWN_P || downPcontroller #if android || virtualpad.buttonDown.justPressed #end)
 		{
 			changeSelection(1);
 		}
 
-		if (controls.ACCEPT && !FlxG.keys.pressed.ALT)
+		if ((controls.ACCEPT #if android || virtualpad.buttonA.justPressed #end) && !FlxG.keys.pressed.ALT)
 		{
 			var daSelected:String = menuItems[curSelected];
 
@@ -257,6 +271,7 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.instance.coolingVideo.destroy();
 						PlayState.instance.coolingHandler.kill();
 						PlayState.instance.coolingHandler.bitmap.dispose();
+
 					}
 					if (PlayState.isStoryMode)
 					{
