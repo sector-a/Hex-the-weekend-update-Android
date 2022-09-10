@@ -153,7 +153,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
-					//FlxG.camera.follow(null); (sirox) wha? kadeDev, you actually broke the flixel by using null as camfollow ._.
+					FlxG.camera.follow(null);
 					PlayState.startTime = 0;
 					if (PlayState.instance.useVideo)
 					{
