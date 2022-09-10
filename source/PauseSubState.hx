@@ -264,14 +264,15 @@ class PauseSubState extends MusicBeatSubstate
 
 					FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, PlayState.instance.handleInput);
 					FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
-					if (PlayState.instance.coolingHandler != null)
+					if (PlayState.instance.coolingVideo != null)
 					{
 						Debug.logTrace("removing cooling video");
 						PlayState.instance.remove(PlayState.instance.coolingVideo);
 						PlayState.instance.coolingVideo.destroy();
-						PlayState.instance.coolingHandler.kill();
-						PlayState.instance.coolingHandler.bitmap.dispose();
-
+						//PlayState.instance.coolingVideo.bitmap.kill();
+						PlayState.instance.coolingVideo.bitmap.stop();
+						PlayState.instance.coolingVideo.bitmap.visible = false;
+						PlayState.instance.coolingVideo.bitmap.dispose();
 					}
 					if (PlayState.isStoryMode)
 					{
