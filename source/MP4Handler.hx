@@ -1,5 +1,8 @@
 package;
 
+#if android
+import android.net.Uri;
+#end
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -82,6 +85,9 @@ class MP4Handler
 
 	function checkFile(fileName:String):String
 	{
+                #if android
+		return Uri.fromFile(fileName);
+                #else
 		var pDir = "";
 		var appDir = "file:///" + Sys.getCwd();
 
@@ -91,6 +97,7 @@ class MP4Handler
 			pDir = "file:///";
 
 		return pDir + fileName;
+                #end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
