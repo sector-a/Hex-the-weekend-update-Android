@@ -56,13 +56,12 @@ class CustomControlsState extends MusicBeatSubstate
 		config = new Config();
 		
 		// bg
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage("menuDesat"));
-		menuBG.color = 0xFFea71fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.antialiasing = FlxG.save.data.antialiasing;
-		add(menuBG);
+		var yeah = new FlxBackdrop(Paths.image('options/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		yeah.setPosition(0, 0);
+		yeah.antialiasing = true;
+		yeah.scrollFactor.set();
+		add(yeah);
+		yeah.velocity.set(20, 0);
 
 		// load curSelected
 		curSelected = config.getcontrolmode();
@@ -126,7 +125,7 @@ class CustomControlsState extends MusicBeatSubstate
 		importbutton.setLabelFormat("VCR OSD Mono", 24, FlxColor.BLACK,"center");
 
 		// add bg
-		add(menuBG);
+		add(yeah);
 
 		// add buttons
 		add(exitbutton);
