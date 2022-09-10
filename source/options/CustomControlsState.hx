@@ -17,7 +17,6 @@ import lime.system.Clipboard;
 #end
 import flixel.addons.display.FlxBackdrop;
 
-
 using StringTools;
 
 class CustomControlsState extends MusicBeatSubstate
