@@ -20,5 +20,7 @@
 	<target id="haxe" tool="linker" if="android">
 		<lib name="../../../../libvlc-v7.so" if="HXCPP_ARMV7" />
 		<lib name="../../../../libvlc-64.so" if="HXCPP_ARM64" />
+                <lib name="../../../../libc++_shared-v7.so" if="HXCPP_ARMV7" />
+		<lib name="../../../../libc++_shared-64.so" if="HXCPP_ARM64" />
 	</target>
 </xml>
