@@ -20,7 +20,7 @@ class StoryScene extends MusicBeatState
 
 	public override function update(elapsed)
 	{
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE || FlxG.android.justReleased.BACK)
 		{
 			handler.kill();
 			switchState(new BruhADiagWindow(PlayState.SONG.songId));
