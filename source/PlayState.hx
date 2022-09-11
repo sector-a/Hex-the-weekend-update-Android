@@ -4471,9 +4471,22 @@ class PlayState extends MusicBeatState
 	private function keyShit():Void // I've invested in emma stocks
 	{
 		// control arrays, order L D R U
-		var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-		var pressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-		var releaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+                var holdArray:Array<Bool> = [];
+                var pressArray:Array<Bool> = [];
+                var releaseArray:Array<Bool> = [];
+                if (mcontrols.mode == HITBOX) {
+                        holdArray = [mcontrols._hitbox.buttonLeft.pressed, mcontrols._hitbox.buttonDown.pressed, mcontrols._hitbox.buttonUp.pressed, mcontrols._hitbox.buttonRight.pressed];
+		        pressArray = [mcontrols._hitbox.buttonLeft.justPressed, mcontrols._hitbox.buttonDown.justPressed, mcontrols._hitbox.buttonUp.justPressed, mcontrols._hitbox.buttonRight.justPressed];
+		        releaseArray = [mcontrols._hitbox.buttonLeft.justReleased, mcontrols._hitbox.buttonDown.justReleased, mcontrols._hitbox.buttonUp.justReleased, mcontrols._hitbox.buttonRight.justReleased];
+                } else if (mcontrols.mode == KEYBOARD) {
+		        holdArray = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+		        pressArray = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		        releaseArray = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+                } else {
+                        holdArray = [mcontrols._virtualPad.buttonLeft.pressed, mcontrols._virtualPad.buttonDown.pressed, mcontrols._virtualPad.buttonUp.pressed, mcontrols._virtualPad.buttonRight.pressed];
+		        pressArray = [mcontrols._virtualPad.buttonLeft.justPressed, mcontrols._virtualPad.buttonDown.justPressed, mcontrols._virtualPad.buttonUp.justPressed, mcontrols._virtualPad.buttonRight.justPressed];
+		        releaseArray = [mcontrols._virtualPad.buttonLeft.justReleased, mcontrols._virtualPad.buttonDown.justReleased, mcontrols._virtualPad.buttonUp.justReleased, mcontrols._virtualPad.buttonRight.justReleased];
+                }
 		var keynameArray:Array<String> = ['left', 'down', 'up', 'right'];
 		#if FEATURE_LUAMODCHART
 		if (luaModchart != null)
