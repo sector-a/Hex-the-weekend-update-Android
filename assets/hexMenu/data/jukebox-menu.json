@@ -237,7 +237,7 @@
      "scale": 1,
      "isSparrow": false,
      "name": "select_symbol",
-     "graphicPath": "jukebwox/select_symbol",
+     "graphicPath": "jukebox/select_symbol",
      "graphicLib": "hexMenu",
      "animations": []
     },
