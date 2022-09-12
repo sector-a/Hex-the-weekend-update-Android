@@ -675,7 +675,7 @@ class PlayState extends MusicBeatState
 			coolingVideo = new VideoSprite(-24, -224);
                         coolingVideo.bitmap.canSkip = false;
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        //coolingVideo.setGraphicSize(945, 472);
+                        coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
