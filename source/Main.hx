@@ -17,6 +17,8 @@ import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import Generic.PermsState;
+import sys.FileSystem;
 
 class Main extends Sprite
 {
@@ -33,6 +35,11 @@ class Main extends Sprite
 	public static var instance:Main;
 
 	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
+	
+	static final videoFiles:Array<String> = [
+		"animated_cutscene",
+		"coolingVisualizer"
+	];
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -49,7 +56,7 @@ class Main extends Sprite
 
 		super();
 
-                SUtil.uncaughtErrorHandler();
+		Generic.initCrashHandler();
 
 		if (stage != null)
 		{
@@ -86,8 +93,18 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-
-                SUtil.check();
+		
+		Generic.mode = ROOTDATA;
+		if (!FileSystem.exists(Generic.returnPath() + 'assets')) {
+			FileSystem.createDirectory(Generic.returnPath() + 'assets');
+		}
+		if (!FileSystem.exists(Generic.returnPath() + 'assets/videos')) {
+			FileSystem.createDirectory(Generic.returnPath() + 'assets/videos');
+		}
+		trace('created shit');
+        for (vid in videoFiles) {
+			Generic.copyContent(Paths._video(vid), Paths._video(vid));
+		}
 
 		#if !cpp
 		framerate = 60;

@@ -199,7 +199,7 @@ class Paths
 	inline static public function video(key:String, ?library:String)
 	{
 		trace('assets/videos/$key.mp4');
-	  return SUtil.getPath() + 'assets/videos/$key.mp4';
+	  return Generic.returnPath() + 'assets/videos/$key.mp4';
 	}
 
         inline static public function _video(key:String, ?library:String)
