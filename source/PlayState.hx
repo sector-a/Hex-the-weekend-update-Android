@@ -679,7 +679,11 @@ class PlayState extends MusicBeatState
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
-                        coolingVideo.updateHitbox();
+                        coolingVideo.bitmap.set_width(150);
+                        coolingVideo.bitmap.set_height(75);
+                        coolingVideo.width = 150;
+                        coolingVideo.height = 75;
+                        //coolingVideo.updateHitbox();
 			add(coolingVideo);
 
 			Debug.logTrace("starting vis");
