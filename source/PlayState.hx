@@ -85,6 +85,7 @@ import Discord.DiscordClient;
 #if mobileC
 import ui.Mobilecontrols;
 #end
+import vlc.MP4Sprite;
 
 using StringTools;
 
@@ -321,7 +322,7 @@ class PlayState extends MusicBeatState
 
 	public static var highestCombo:Int = 0;
 
-	public var coolingVideo:VideoSprite = null;
+	public var coolingVideo:MP4Sprite = null;
 
 	public var executeModchart = false;
 	
@@ -672,10 +673,10 @@ class PlayState extends MusicBeatState
 
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
-			coolingVideo = new VideoSprite(-24, -224);
-                        coolingVideo.bitmap.canSkip = false;
+			coolingVideo = new MP4Sprite(-24, -224);
+                        //coolingVideo.bitmap.canSkip = false;
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        //coolingVideo.setGraphicSize(945, 472);
+                        coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
@@ -4075,7 +4076,7 @@ class PlayState extends MusicBeatState
 					if (isCooling)
 					{
                                                 FlxG.camera.zoom = 1.0;
-                                                var video:VideoHandler = new VideoHandler();
+                                                var video:MP4Handler = new MP4Handler();
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
                                                 /*video.setGraphicSize(1280, 720);
                                                 video.updateHitbox();*/
