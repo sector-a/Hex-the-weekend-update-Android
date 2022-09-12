@@ -4075,15 +4075,14 @@ class PlayState extends MusicBeatState
 					if (isCooling)
 					{
                                                 FlxG.camera.zoom = 1.0;
-                                                var video:VideoSprite = new VideoSprite(0, 0);
+                                                var video:VideoHandler = new VideoHandler();
                                                 video.playVideo(Paths.video("animated_cutscene"), false, true, true);
-                                                video.setGraphicSize(1280, 720);
-                                                video.updateHitbox();
+                                                /*video.setGraphicSize(1280, 720);
+                                                video.updateHitbox();*/
                                                 video.finishCallback = function()
 		                                {
 			                                switchState(new BruhADiagWindow(SONG.songId));
 		                                };
-                                                add(video);
 					}
 					else
 					{
