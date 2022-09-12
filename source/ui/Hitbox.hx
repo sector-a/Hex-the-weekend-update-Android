@@ -1,58 +1,62 @@
 package ui;
 
-import openfl.display.Shape;
-import openfl.display.BitmapData;
-import ui.FlxButton;
-import flixel.FlxG;
+import flixel.graphics.FlxGraphic;
+import flixel.addons.ui.FlxButtonPlus;
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
+import flixel.FlxG;
+import flixel.graphics.frames.FlxTileFrames;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.system.FlxAssets;
 import flixel.util.FlxDestroyUtil;
+import flixel.ui.FlxButton;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFrame;
+import flixel.ui.FlxVirtualPad;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
-import flixel.group.FlxSpriteGroup;
+import openfl.display.Shape;
+import openfl.display.BitmapData;
+import flixel.util.FlxColor;
 
-/**
- * A zone with 4 hint's (A hitbox).
- * It's really easy to customize the layout.
- *
- * @author: Saw (M.A. Jigsaw)
- */
+// copyed from flxvirtualpad
 class Hitbox extends FlxSpriteGroup
 {
-	public var buttonLeft:FlxButton = new FlxButton(0, 0);
-	public var buttonDown:FlxButton = new FlxButton(0, 0);
-	public var buttonUp:FlxButton = new FlxButton(0, 0);
-	public var buttonRight:FlxButton = new FlxButton(0, 0);
+    public var hitbox:FlxSpriteGroup;
 
-	/**
-	 * Create the zone.
-	 */
-	public function new()
-	{
-		super();
+    var sizex:Int = 320;
 
-		add(buttonLeft = createHint(0, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FF));
-		add(buttonDown = createHint(FlxG.width / 4, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FFFF));
-		add(buttonUp = createHint(FlxG.width / 2, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FF00));
-		add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF0000));
+    var screensizey:Int = 720;
 
-		scrollFactor.set();
-	}
+    public var buttonLeft:FlxButton;
+    public var buttonDown:FlxButton;
+    public var buttonUp:FlxButton;
+    public var buttonRight:FlxButton;
+    
+    public function new(?widghtScreen:Int)
+    {
+        super();
 
-	/**
-	 * Clean up memory.
-	 */
-	override function destroy()
-	{
-		super.destroy();
+        /*if (widghtScreen == null)
+            widghtScreen = FlxG.width;*/
 
-		buttonLeft = null;
-		buttonDown = null;
-		buttonUp = null;
-		buttonRight = null;
-	}
+        sizex = widghtScreen != null ? Std.int(widghtScreen / 4) : 320;
 
-	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
+        
+        //add graphic
+        hitbox = new FlxSpriteGroup();
+        hitbox.scrollFactor.set();
+
+        hitbox.add(add(buttonLeft = createhitbox(0, 0xFF00FF)));
+
+        hitbox.add(add(buttonDown = createhitbox(sizex, 0x00FFFF)));
+
+        hitbox.add(add(buttonUp = createhitbox(sizex * 2, 0x00FF00)));
+
+        hitbox.add(add(buttonRight = createhitbox(sizex * 3, 0xFF0000)));
+    }
+    
+    private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
 	{
 		var shape:Shape = new Shape();
 
@@ -81,57 +85,41 @@ class Hitbox extends FlxSpriteGroup
 		return bitmap;
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF):FlxButton
-	{
-		var hintTween:FlxTween = null;
-		var hint:FlxButton = new FlxButton(X, Y);
-		hint.loadGraphic(createHintGraphic(Width, Height, Color));
-		hint.solid = false;
-		hint.immovable = true;
-		hint.scrollFactor.set();
-		hint.alpha = 0.00001;
-		hint.onDown.callback = function()
-		{
-			if (hintTween != null)
-				hintTween.cancel();
+    public function createhitbox(X:Float, color:Int, Y:Float = 0, width:Float = 0, height:Float = 0) {
+        var button = new FlxButton(X, Y);
+        if (width == 0) {
+        	width = FlxG.width / 4;
+        }
+        if (height == 0) {
+        	height = 720;
+        }
+        button.loadGraphic(createHintGraphic(Std.int(width), Std.int(height), color));
 
-			hintTween = FlxTween.tween(hint, {alpha: FlxG.save.data.hitboxOpacity}, 0.0001, {
-				ease: FlxEase.circInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					hintTween = null;
-				}
-			});
-		}
-		hint.onUp.callback = function()
-		{
-			if (hintTween != null)
-				hintTween.cancel();
+        button.alpha = 0;
 
-			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.0001, {
-				ease: FlxEase.circInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					hintTween = null;
-				}
-			});
-		}
-		hint.onOut.callback = function()
-		{
-			if (hintTween != null)
-				hintTween.cancel();
+    
+        button.onDown.callback = function (){
+            FlxTween.num(0, FlxG.save.data.hitboxOpacity, .075, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+        };
 
-			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.0001, {
-				ease: FlxEase.circInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					hintTween = null;
-				}
-			});
-		}
-		#if FLX_DEBUG
-		hint.ignoreDrawDebug = true;
-		#end
-		return hint;
-	}
+        button.onUp.callback = function (){
+            FlxTween.num(FlxG.save.data.hitboxOpacity, 0, .1, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+        }
+        
+        button.onOut.callback = function (){
+            FlxTween.num(button.alpha, 0, .2, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+        }
+
+        return button;
+    }
+
+    override public function destroy():Void
+        {
+            super.destroy();
+    
+            buttonLeft = null;
+            buttonDown = null;
+            buttonUp = null;
+            buttonRight = null;
+        }
 }
