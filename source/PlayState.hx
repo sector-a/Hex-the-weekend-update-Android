@@ -581,7 +581,7 @@ class PlayState extends MusicBeatState
 		{
 			songMultiplier = 1;
 			PlayStateChangeables.scrollSpeed = 1.8;
-			PlayStateChangeables.useDownscroll = false;
+			//PlayStateChangeables.useDownscroll = false;
 		}
 
 		lScrl = [];
