@@ -675,14 +675,14 @@ class PlayState extends MusicBeatState
 			coolingVideo = new VideoSprite(-24, -224);
                         coolingVideo.bitmap.canSkip = false;
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
-                        //coolingVideo.setGraphicSize(945, 472);
+                        coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
 			coolingVideo.antialiasing = true;
 			coolingVideo.scrollFactor.set(0.9, 0.9);
-                        coolingVideo.bitmap.set_width(150);
+                        /*coolingVideo.bitmap.set_width(150);
                         coolingVideo.bitmap.set_height(75);
                         coolingVideo.width = 150;
-                        coolingVideo.height = 75;
+                        coolingVideo.height = 75;*/
                         //coolingVideo.updateHitbox();
 			add(coolingVideo);
 
