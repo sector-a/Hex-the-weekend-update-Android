@@ -2018,7 +2018,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-			coolingVideo.video.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			Debug.logTrace("doing the thing");
 			FlxTween.tween(coolingVideo, {alpha: 1}, 1);
 		}
@@ -2374,7 +2374,7 @@ class PlayState extends MusicBeatState
 
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
-				coolingVideo.video.pause();
+				coolingVideo.bitmap.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2424,8 +2424,8 @@ class PlayState extends MusicBeatState
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
 				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingVideo.video.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingVideo.video.resume();
+				coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingVideo.bitmap.resume();
 			}
 
 			if (startTimer != null)
@@ -3022,7 +3022,7 @@ class PlayState extends MusicBeatState
 			if (coolingVideo != null)
 			{
 				if (!coolingVideo.videp.isPlaying && !paused && !endingSong)
-					coolingVideo.video.resume();
+					coolingVideo.bitmap.resume();
 			}
 			// sync
 			/*@:privateAccess
