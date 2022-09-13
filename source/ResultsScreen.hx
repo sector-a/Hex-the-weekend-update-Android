@@ -232,8 +232,8 @@ class ResultsScreen extends FlxSubState
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
 			if (PlayState.instance.coolingVideo != null)
 			{
-				PlayState.instance.coolingVideo.video.stop();
-				PlayState.instance.coolingVideo.video.visible = false;
+				PlayState.instance.coolingVideo.bitmap.stop();
+				PlayState.instance.coolingVideo.bitmap.visible = false;
 			}
 			if (PlayState.isStoryMode)
 			{
