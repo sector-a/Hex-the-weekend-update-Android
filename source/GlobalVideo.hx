@@ -4,7 +4,7 @@ import openfl.Lib;
 
 class GlobalVideo
 {
-	private static var video:VideoHandler;
+	private static var video:WebmVideoHandler;
 	private static var webm:WebmHandler;
 	public static var isWebm:Bool = false;
 	public static var isAndroid:Bool = false;
