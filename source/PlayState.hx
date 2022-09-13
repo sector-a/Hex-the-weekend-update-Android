@@ -673,7 +673,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			coolingVideo = new VideoSprite(-24, -224);
-                        coolingVideo.bitmap.canSkip = false;
+                        //coolingVideo.bitmap.canSkip = false;
 			coolingVideo.playVideo(Paths.video('coolingVisualizer'), false, false);
                         //coolingVideo.setGraphicSize(945, 472);
 		        //var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
@@ -2018,7 +2018,7 @@ class PlayState extends MusicBeatState
 		if (Stage.curStage == "hexw" && SONG.songId.toLowerCase() == "cooling")
 		{
 			var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-			coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+			coolingVideo.video.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 			Debug.logTrace("doing the thing");
 			FlxTween.tween(coolingVideo, {alpha: 1}, 1);
 		}
@@ -2374,7 +2374,7 @@ class PlayState extends MusicBeatState
 
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
-				coolingVideo.bitmap.pause();
+				coolingVideo.video.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2424,8 +2424,8 @@ class PlayState extends MusicBeatState
 			if (Stage.curStage == "hexw" && songStarted && SONG.songId.toLowerCase() == "cooling")
 			{
 				var perecentSupposed = (FlxG.sound.music.time / songMultiplier) / (FlxG.sound.music.length / songMultiplier);
-				coolingVideo.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
-				coolingVideo.bitmap.resume();
+				coolingVideo.video.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+				coolingVideo.video.resume();
 			}
 
 			if (startTimer != null)
@@ -3021,8 +3021,8 @@ class PlayState extends MusicBeatState
 			Conductor.rawPosition = FlxG.sound.music.time;
 			if (coolingVideo != null)
 			{
-				if (!coolingVideo.bitmap.isPlaying && !paused && !endingSong)
-					coolingVideo.bitmap.resume();
+				if (!coolingVideo.videp.isPlaying && !paused && !endingSong)
+					coolingVideo.video.resume();
 			}
 			// sync
 			/*@:privateAccess
