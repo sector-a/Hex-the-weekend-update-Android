@@ -11,12 +11,12 @@ class GlobalVideo
 	public static var daAlpha1:Float = 0.2;
 	public static var daAlpha2:Float = 1;
 
-	public static function setVid(vid:VideoHandler):Void
+	public static function setVid(vid:WebmVideoHandler):Void
 	{
 		video = vid;
 	}
 
-	public static function getVid():VideoHandler
+	public static function getVid():WebmVideoHandler
 	{
 		return video;
 	}
