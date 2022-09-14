@@ -10,6 +10,7 @@ class HexGalleryMenu extends HexMenuState
 	public var selectedIndex = 0;
 	public var selectedPage = 0;
 	public var zoomedImage:FlxSprite;
+        var blockI:Bool = false;
 
 	public override function create()
 	{
@@ -28,6 +29,8 @@ class HexGalleryMenu extends HexMenuState
 		#if mobileC
 		addVirtualPad(FULL, A_B);
 		#end
+
+                blockI = false;
 	}
 
 	public function select()
@@ -92,11 +95,18 @@ class HexGalleryMenu extends HexMenuState
 
 	public override function update(elapsed)
 	{
-		if (controls.BACK)
-			switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
-		if (controls.LEFT_P || controls.RIGHT_P)
+		var justTouched:Bool = false;
+
+		for (touch in FlxG.touches.list)
 		{
-			if (zoomedImage != null)
+			justTouched = false;
+
+			if (touch.justPressed){
+				justTouched = true;
+			}
+                }
+                if (justTouched) {
+                        if (zoomedImage != null)
 			{
 				tween = FlxTween.tween(zoomedImage, {alpha: 0}, 0.2, {
 					onComplete: function(tw)
@@ -105,11 +115,17 @@ class HexGalleryMenu extends HexMenuState
 					}
 				});
 			}
+                        blockI = false;
+                }
+		if (controls.BACK && !blockI)
+			switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
+		if ((controls.LEFT_P || controls.RIGHT_P) && !blockI)
+		{
 			FlxG.sound.play(Paths.sound("scrollMenu"));
 			setVisible(selectedPage == 0 ? 1 : 0);
 		}
 
-		if (controls.ACCEPT)
+		if (controls.ACCEPT && !blockI)
 		{
 			if (zoomedImage != null)
 			{
@@ -124,20 +140,13 @@ class HexGalleryMenu extends HexMenuState
 			add(zoomedImage);
 			zoomedImage.alpha = 0;
 
+                        blockI = true;
+
 			tween = FlxTween.tween(zoomedImage, {alpha: 1}, 0.2);
 		}
 
-		if (controls.DOWN_P)
+		if (controls.DOWN_P && !blockI)
 		{
-			if (zoomedImage != null)
-			{
-				tween = FlxTween.tween(zoomedImage, {alpha: 0}, 0.2, {
-					onComplete: function(tw)
-					{
-						remove(zoomedImage);
-					}
-				});
-			}
 			FlxG.sound.play(Paths.sound("scrollMenu"));
 			getItemByName("pos" + (selectedIndex + 1)).changeOutGraphic("gallery/left_normal_" + (selectedIndex + 1));
 			selectedIndex++;
@@ -146,17 +155,8 @@ class HexGalleryMenu extends HexMenuState
 				selectedIndex = 0;
 			select();
 		}
-		if (controls.UP_P)
+		if (controls.UP_P && !blockI)
 		{
-			if (zoomedImage != null)
-			{
-				tween = FlxTween.tween(zoomedImage, {alpha: 0}, 0.2, {
-					onComplete: function(tw)
-					{
-						remove(zoomedImage);
-					}
-				});
-			}
 			FlxG.sound.play(Paths.sound("scrollMenu"));
 			getItemByName("pos" + (selectedIndex + 1)).changeOutGraphic("gallery/left_normal_" + (selectedIndex + 1));
 			selectedIndex--;
