@@ -2,6 +2,7 @@ import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.addons.display.FlxBackdrop;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -115,7 +116,9 @@ class HexGalleryMenu extends HexMenuState
 					}
 				});
 			}
-                        blockI = false;
+                        new FlxTimer().start(0.5, function(tmr:FlxTimer) {
+                                blockI = false;
+                        });
                 }
 		if (controls.BACK && !blockI)
 			switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
