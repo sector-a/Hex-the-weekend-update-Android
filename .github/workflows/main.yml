@@ -57,6 +57,7 @@ jobs:
           haxelib --quiet git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib --quiet git hxCodec https://github.com/polybiusproxy/hxCodec.git
           haxelib --quiet git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
+          haxelib --quiet install actuate
           haxelib list
       - name: Configure Android
         run: |
