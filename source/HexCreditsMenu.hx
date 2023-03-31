@@ -11,7 +11,7 @@ class HexCreditsMenu extends HexMenuState
 
 	public override function create()
 	{
-		var yeah = new FlxBackdrop(Paths.image('credits/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		var yeah = new FlxBackdrop(Paths.image('credits/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
@@ -23,7 +23,7 @@ class HexCreditsMenu extends HexMenuState
 		Items.members.remove(getItemByName("bg"));
 
 		getItemByName("cameos").visible = false;
-		
+
 		#if mobileC
 		addVirtualPad(UP_DOWN, A);
 		#end

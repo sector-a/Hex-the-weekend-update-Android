@@ -17,7 +17,6 @@ import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import Generic.PermsState;
 import sys.FileSystem;
 
 class Main extends Sprite
@@ -35,11 +34,8 @@ class Main extends Sprite
 	public static var instance:Main;
 
 	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
-	
-	static final videoFiles:Array<String> = [
-		"animated_cutscene",
-		"coolingVisualizer"
-	];
+
+	static final videoFiles:Array<String> = ["animated_cutscene", "coolingVisualizer"];
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -56,7 +52,8 @@ class Main extends Sprite
 
 		super();
 
-		Generic.initCrashHandler();
+		SUtil.uncaughtErrorHandler();
+		SUtil.checkPermissions();
 
 		if (stage != null)
 		{
@@ -67,8 +64,6 @@ class Main extends Sprite
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 	}
-
-	public static var webmHandler:WebmHandler;
 
 	private function init(?E:Event):Void
 	{
@@ -93,19 +88,7 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-		
-		Generic.mode = ROOTDATA;
-		if (!FileSystem.exists(Generic.returnPath() + 'assets')) {
-			FileSystem.createDirectory(Generic.returnPath() + 'assets');
-		}
-		if (!FileSystem.exists(Generic.returnPath() + 'assets/videos')) {
-			FileSystem.createDirectory(Generic.returnPath() + 'assets/videos');
-		}
 		trace('created shit');
-        for (vid in videoFiles) {
-			Generic.copyContent(Paths._video(vid), Paths._video(vid));
-		}
-
 		#if !cpp
 		framerate = 60;
 		#end
@@ -120,8 +103,8 @@ class Main extends Sprite
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, Std.int(zoom), framerate, framerate, true, false);
-                //game = new FlxGame(gamewidth, gameheight, initialState, zoom, 60, 60, true);
+		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < '5.0.0') zoom, #end framerate, framerate, true, false);
+		// game = new FlxGame(gamewidth, gameheight, initialState, zoom, 60, 60, true);
 		addChild(game);
 
 		addChild(fpsCounter);
@@ -134,7 +117,8 @@ class Main extends Sprite
 	var game:FlxGame;
 
 	var fpsCounter:KadeEngineFPS;
-        public static function dumpObject(graphic:FlxGraphic)
+
+	public static function dumpObject(graphic:FlxGraphic)
 	{
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())

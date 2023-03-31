@@ -62,14 +62,14 @@ class HexStoryMenu extends HexMenuState
 		weekXHighScore = Highscore.getWeekScore(10, curDifficulty);
 		weekendHighScore = Highscore.getWeekScore(11, curDifficulty);
 
-		yeah = new FlxBackdrop(Paths.image('story/background_1', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		yeah = new FlxBackdrop(Paths.image('story/background_1', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
 		add(yeah);
 		yeah.velocity.set(20, 0);
 
-		yeah2 = new FlxBackdrop(Paths.image('story/background_2', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		yeah2 = new FlxBackdrop(Paths.image('story/background_2', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah2.setPosition(0, 0);
 		yeah2.antialiasing = true;
 		yeah2.scrollFactor.set();
@@ -77,7 +77,11 @@ class HexStoryMenu extends HexMenuState
 		yeah2.velocity.set(20, 0);
 		yeah2.alpha = 0;
 
+		#if debug
+		weekendXUnlocked = true;
+		#else
 		weekendXUnlocked = FlxG.save.data.weekxBeat;
+		#end
 		super.create();
 
 		Items.members.remove(getItemByName("bg"));
@@ -117,10 +121,10 @@ class HexStoryMenu extends HexMenuState
 		}
 
 		Debug.logTrace('bruh!');
-		
+
 		#if mobileC
 		addVirtualPad(FULL, A_B);
-		#end		
+		#end
 	}
 
 	public function changeDiff()

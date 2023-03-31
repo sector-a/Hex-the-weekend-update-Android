@@ -8,7 +8,7 @@ class HexOptionsDirect extends HexMenuState
 	{
 		instance = this;
 		superCreate();
-		var yeah = new FlxBackdrop(Paths.image('options/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		var yeah = new FlxBackdrop(Paths.image('options/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();

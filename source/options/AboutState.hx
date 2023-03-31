@@ -21,18 +21,17 @@ class AboutState extends MusicBeatState
 
 	override function create()
 	{
-
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
 
-		var yeah = new FlxBackdrop(Paths.image('options/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		var yeah = new FlxBackdrop(Paths.image('options/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
 		add(yeah);
 		yeah.velocity.set(20, 0);
-		
+
 		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
@@ -50,10 +49,8 @@ class AboutState extends MusicBeatState
 		add(logoBl);
 		add(text);
 
- 
 		super.create();
 	}
-
 
 	override function update(elapsed:Float)
 	{
@@ -70,7 +67,5 @@ class AboutState extends MusicBeatState
 			FlxG.switchState(new HexOptionsDirect(HexMenuState.loadHexMenu("options-menu")));
 		}
 		#end
-
 	}
-
 }

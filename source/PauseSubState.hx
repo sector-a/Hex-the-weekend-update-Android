@@ -45,7 +45,7 @@ class PauseSubState extends MusicBeatSubstate
 	var startOffset:Float = PlayState.songOffset;
 
 	var bg:FlxSprite;
-	
+
 	#if mobileC
 	var virtualpad:FlxVirtualPad;
 	#end
@@ -53,14 +53,6 @@ class PauseSubState extends MusicBeatSubstate
 	public function new()
 	{
 		super();
-
-		if (PlayState.instance.useVideo)
-		{
-			menuItems.remove("Resume");
-			if (GlobalVideo.get().playing)
-				GlobalVideo.get().pause();
-		}
-
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
 
@@ -142,7 +134,7 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.globalManager.active = false;
 
 		cameras = [PlayState.instance.camHUD];
-		
+
 		#if mobileC
 		virtualpad = new FlxVirtualPad(UP_DOWN, A);
 		virtualpad.alpha = 0.75;
@@ -160,9 +152,6 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
-
-		if (PlayState.instance.useVideo)
-			menuItems.remove('Resume');
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -220,12 +209,6 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					FlxTween.globalManager.active = true;
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
 					PlayState.stageTesting = false;
 					switchState(new PlayState());
 				case "Options":
@@ -235,12 +218,6 @@ class PauseSubState extends MusicBeatSubstate
 					FUCKINGDONTDOITVLCMEDIAPLAYERISWEARTOGOD = true;
 					FlxTween.globalManager.active = true;
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
 					if (PlayState.loadRep)
 					{
 						FlxG.save.data.botplay = false;
@@ -268,7 +245,7 @@ class PauseSubState extends MusicBeatSubstate
 						Debug.logTrace("removing cooling video");
 						PlayState.instance.remove(PlayState.instance.coolingVideo);
 						PlayState.instance.coolingVideo.destroy();
-						//PlayState.instance.coolingVideo.bitmap.kill();
+						// PlayState.instance.coolingVideo.bitmap.kill();
 						PlayState.instance.coolingVideo.bitmap.stop();
 						PlayState.instance.coolingVideo.bitmap.visible = false;
 						PlayState.instance.coolingVideo.bitmap.dispose();

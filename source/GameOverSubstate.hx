@@ -18,10 +18,10 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camFollow:FlxObject;
 
 	var stageSuffix:String = "";
-	
+
 	#if mobileC
-        var virtualpad:FlxVirtualPad;
-        #end
+	var virtualpad:FlxVirtualPad;
+	#end
 
 	public function new(x:Float, y:Float)
 	{
@@ -55,7 +55,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		bf.playAnim('firstDeath');
-		
+
 		#if mobileC
 		virtualpad = new FlxVirtualPad(NONE, A_B);
 		virtualpad.alpha = 0.75;
@@ -79,12 +79,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (FlxG.save.data.InstantRespawn)
 		{
 			PlayState.startTime = 0;
-			if (PlayState.instance.useVideo)
-			{
-				GlobalVideo.get().stop();
-				PlayState.instance.remove(PlayState.instance.videoSprite);
-				PlayState.instance.removedVideo = true;
-			}
 			PlayState.instance.restart();
 			close();
 			PlayState.loadRep = false;
@@ -96,12 +90,6 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.music.stop();
 
 			PlayState.startTime = 0;
-			if (PlayState.instance.useVideo)
-			{
-				GlobalVideo.get().stop();
-				PlayState.instance.remove(PlayState.instance.videoSprite);
-				PlayState.instance.removedVideo = true;
-			}
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, PlayState.instance.handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, PlayState.instance.releaseInput);
 			PlayState.instance.switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
@@ -155,16 +143,10 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					FlxG.camera.follow(null);
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
-					//PlayState.instance.restart();
+					// PlayState.instance.restart();
 					PlayState.stageTesting = false;
-					//close();
-                                        switchState(new PlayState());
+					// close();
+					switchState(new PlayState());
 				});
 			});
 		}

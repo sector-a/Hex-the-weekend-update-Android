@@ -84,7 +84,7 @@ class HexMainMenu extends HexMenuState
 		KeyBinds.keyCheck();
 		FlxG.mouse.visible = false;
 		superCreate();
-		yeah = new FlxBackdrop(Paths.image('main/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		yeah = new FlxBackdrop(Paths.image('main/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
@@ -111,9 +111,18 @@ class HexMainMenu extends HexMenuState
 		}
 
 		if (FlxG.save.data.weekendxBeat == null)
+			#if debug
+			FlxG.save.data.weekendxbeat = true;
+			#else
 			FlxG.save.data.weekendxbeat = false;
+			#end
+
 		if (FlxG.save.data.weekxBeat == null)
+			#if debug
+			FlxG.save.data.weekxbeat = true;
+			#else
 			FlxG.save.data.weekxbeat = false;
+			#end
 
 		Debug.logTrace(FlxG.save.data.weekendxBeat + " <<<");
 
@@ -129,10 +138,10 @@ class HexMainMenu extends HexMenuState
 		getItemByName("jukebox").setPosition(Boxes[3].x, Boxes[3].y);
 		getItemByName("options").setPosition(Boxes[4].x, Boxes[4].y);
 		getItemByName("credits").setPosition(Boxes[5].x, Boxes[5].y);
-		
+
 		#if mobileC
 		addVirtualPad(UP_DOWN, A);
-		#end	
+		#end
 	}
 
 	var lerp:Float = 0;

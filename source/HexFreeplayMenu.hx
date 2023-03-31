@@ -319,7 +319,7 @@ class HexFreeplayMenu extends HexMenuState
 		bad = true;
 		#end
 
-		var yeah = new FlxBackdrop(Paths.image('freeplay/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		var yeah = new FlxBackdrop(Paths.image('freeplay/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
@@ -349,7 +349,7 @@ class HexFreeplayMenu extends HexMenuState
 		add(RatingText);
 
 		move(true, true);
-		
+
 		#if mobileC
 		addVirtualPad(FULL, A_B);
 		#end
@@ -412,14 +412,15 @@ class HexFreeplayMenu extends HexMenuState
 			getItemByName("diff").changeOutGraphic("freeplay/difficulty_" + CoolUtil.difficultyFromInt(selectedDiff).toLowerCase());
 		}
 
-                if (FlxG.android.justReleased.BACK) {
-                        PlayState.SONG = songs[6].diffs.get(CoolUtil.difficultyFromInt(selectedDiff).toLowerCase()).data;
+		if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
+		{
+			PlayState.SONG = songs[6].diffs.get(CoolUtil.difficultyFromInt(selectedDiff).toLowerCase()).data;
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = selectedDiff;
 			PlayState.storyWeek = 10;
 
 			switchState(new PlayState());
-                }
+		}
 
 		if (controls.ACCEPT)
 		{

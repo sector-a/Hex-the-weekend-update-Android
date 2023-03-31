@@ -140,7 +140,7 @@ class HexMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.android.justReleased.BACK)
+		if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
 		{
 			var creator = new HexMenuCreator();
 			creator.loadS(_path);

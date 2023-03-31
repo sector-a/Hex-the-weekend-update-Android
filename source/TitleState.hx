@@ -50,11 +50,11 @@ class TitleState extends MusicBeatState
 	{
 		MasterObjectLoader.mutex = new Mutex();
 		// TODO: Refactor this to use OpenFlAssets.
-		
+
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
-		
+
 		#if FEATURE_FILESYSTEM
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
@@ -140,14 +140,14 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		var scrolled = new FlxBackdrop(Paths.image("move_now", "hex"), 0, 0, false, true);
+		var scrolled = new FlxBackdrop(Paths.image("move_now", "hex"));
 		scrolled.setPosition(0, 0);
 		scrolled.antialiasing = true;
 		scrolled.scrollFactor.set();
 		add(scrolled);
 		scrolled.velocity.set(0, 20);
 
-		var scrolled2 = new FlxBackdrop(Paths.image("move_now", "hex"), 0, 0, false, true);
+		var scrolled2 = new FlxBackdrop(Paths.image("move_now", "hex"));
 		scrolled2.setPosition(1280 - scrolled2.width, 0);
 		scrolled2.antialiasing = true;
 		scrolled2.scrollFactor.set();
@@ -300,24 +300,24 @@ class TitleState extends MusicBeatState
 				// Get current version of Kade Engine
 
 				/*var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
-				var returnedData:Array<String> = [];
+					var returnedData:Array<String> = [];
 
-				http.onData = function(data:String)
-				{
-					returnedData[0] = data.substring(0, data.indexOf(';'));
-					returnedData[1] = data.substring(data.indexOf('-'), data.length);*/
+					http.onData = function(data:String)
+					{
+						returnedData[0] = data.substring(0, data.indexOf(';'));
+						returnedData[1] = data.substring(data.indexOf('-'), data.length); */
 
 				switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
 				/*}
 
-				http.onError = function(error)
-				{
-					trace('error: $error');
-					switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
-					clean();
-				}
+					http.onError = function(error)
+					{
+						trace('error: $error');
+						switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
+						clean();
+					}
 
-				http.request();*/
+					http.request(); */
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
@@ -449,4 +449,4 @@ class TitleState extends MusicBeatState
 		}
 	}
 }
-//sex
+// sex

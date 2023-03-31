@@ -11,11 +11,12 @@ class HexGalleryMenu extends HexMenuState
 	public var selectedIndex = 0;
 	public var selectedPage = 0;
 	public var zoomedImage:FlxSprite;
-        var blockI:Bool = false;
+
+	var blockI:Bool = false;
 
 	public override function create()
 	{
-		var yeah = new FlxBackdrop(Paths.image('gallery/background', 'hexMenu'), 0, 0, true, true); // backgrounds are the only hardcoded thing sorry :(
+		var yeah = new FlxBackdrop(Paths.image('gallery/background', 'hexMenu')); // backgrounds are the only hardcoded thing sorry :(
 		yeah.setPosition(0, 0);
 		yeah.antialiasing = true;
 		yeah.scrollFactor.set();
@@ -26,12 +27,12 @@ class HexGalleryMenu extends HexMenuState
 		Items.members.remove(getItemByName("bg"));
 
 		setVisible(0);
-		
+
 		#if mobileC
 		addVirtualPad(FULL, A_B);
 		#end
 
-                blockI = false;
+		blockI = false;
 	}
 
 	public function select()
@@ -102,12 +103,14 @@ class HexGalleryMenu extends HexMenuState
 		{
 			justTouched = false;
 
-			if (touch.justPressed){
+			if (touch.justPressed)
+			{
 				justTouched = true;
 			}
-                }
-                if (justTouched) {
-                        if (zoomedImage != null)
+		}
+		if (justTouched)
+		{
+			if (zoomedImage != null)
 			{
 				tween = FlxTween.tween(zoomedImage, {alpha: 0}, 0.2, {
 					onComplete: function(tw)
@@ -116,10 +119,11 @@ class HexGalleryMenu extends HexMenuState
 					}
 				});
 			}
-                        new FlxTimer().start(0.5, function(tmr:FlxTimer) {
-                                blockI = false;
-                        });
-                }
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
+				blockI = false;
+			});
+		}
 		if (controls.BACK && !blockI)
 			switchState(new HexMainMenu(HexMenuState.loadHexMenu("main-menu")));
 		if ((controls.LEFT_P || controls.RIGHT_P) && !blockI)
@@ -143,7 +147,7 @@ class HexGalleryMenu extends HexMenuState
 			add(zoomedImage);
 			zoomedImage.alpha = 0;
 
-                        blockI = true;
+			blockI = true;
 
 			tween = FlxTween.tween(zoomedImage, {alpha: 1}, 0.2);
 		}
